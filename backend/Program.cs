@@ -1,3 +1,9 @@
+using backend.Models;
+using DotNetEnv;
+using Microsoft.EntityFrameworkCore;
+
+Env.Load();
+
 var builder = WebApplication.CreateBuilder(args);
 
 //swagger: http://localhost:5007/swagger/index.html
@@ -18,6 +24,10 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
         options.JsonSerializerOptions.WriteIndented = false;
     });
+
+var connectionString = Environment.GetEnvironmentVariable("POSTGRES_CONNECTION");
+builder.Services.AddDbContext<PostgresDbContext>(options =>
+    options.UseNpgsql(connectionString));
 
 var app = builder.Build();
 
