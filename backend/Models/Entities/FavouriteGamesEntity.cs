@@ -1,6 +1,6 @@
 namespace backend.Models.Entities;
 
-public class FavouriteGames
+public class FavouriteGamesEntity
 {
     public required int UserId { get; set; }
     public required int GameId { get; set; }

@@ -6,5 +6,5 @@ public class UserDataEntity
     public required string Login { get; set; }
     public int ProfileImageId { get; set; }
 
-    public UserEntity UserEntity { get; set; } = null!;
+    public UserEntity User { get; set; } = null!;
 }

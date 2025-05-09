@@ -7,7 +7,7 @@ public class UserEntity
     public required string HashPassword { get; set; }
 
     public UserDataEntity UserData { get; set; } = null!;
-    public List<FavouriteGames> FavouriteGames { get; set; } = new List<FavouriteGames>();
+    public List<FavouriteGamesEntity> FavouriteGames { get; set; } = new List<FavouriteGamesEntity>();
     public List<ReviewEntity> Reviews { get; set; } = new List<ReviewEntity>();
     public List<VoteReviewEntity> VotesReview { get; set; } = new List<VoteReviewEntity>();
     public List<CommentEntity> Comments { get; set; } = new List<CommentEntity>();

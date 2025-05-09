@@ -14,5 +14,5 @@ public class GameEntity
     public List<GamePlatformsEntity> GamePlatforms { get; set; } = new List<GamePlatformsEntity>();
     public List<GameGenresEntity> GameGenres { get; set; } = new List<GameGenresEntity>();
     public List<ReviewEntity> Reviews { get; set; } = new List<ReviewEntity>();
-    public List<FavouriteGames> FavouriteGames { get; set; } = new List<FavouriteGames>();
+    public List<FavouriteGamesEntity> FavouriteGames { get; set; } = new List<FavouriteGamesEntity>();
 }
