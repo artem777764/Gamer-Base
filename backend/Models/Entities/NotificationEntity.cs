@@ -2,7 +2,7 @@ namespace backend.Models.Entities;
 
 public class NotificationEntity
 {
-    public required int Id { get; set; }
+    public int Id { get; set; }
     public required int UserId { get; set; }
     public required int ReviewId { get; set; }
     public required int EntityTypeId { get; set; }

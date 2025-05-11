@@ -2,9 +2,9 @@ namespace backend.Models.Entities;
 
 public class UserDataEntity
 {
-    public required int Id { get; set; }
+    public int Id { get; set; }
     public required string Login { get; set; }
-    public int ProfileImageId { get; set; }
+    public int? ProfileImageId { get; set; }
 
     public UserEntity User { get; set; } = null!;
 }

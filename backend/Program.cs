@@ -1,4 +1,8 @@
+using backend.Interfaces.IRepositories;
+using backend.Interfaces.IServices;
 using backend.Models;
+using backend.Repositories;
+using backend.Services;
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,6 +32,10 @@ builder.Services.AddControllers()
 var connectionString = Environment.GetEnvironmentVariable("POSTGRES_CONNECTION");
 builder.Services.AddDbContext<PostgresDbContext>(options =>
     options.UseNpgsql(connectionString));
+
+builder.Services.AddScoped<IReviewService, ReviewService>();
+
+builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 
 var app = builder.Build();
 

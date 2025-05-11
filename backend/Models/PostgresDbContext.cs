@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace backend.Models;
 
-class PostgresDbContext : DbContext
+public class PostgresDbContext : DbContext
 {
     public DbSet<CommentEntity> Comments { get; set; } = null!;
     public DbSet<DeveloperEntity> Developers { get; set; } = null!;

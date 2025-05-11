@@ -2,7 +2,7 @@ namespace backend.Models.Entities;
 
 public class ReviewEntity
 {
-    public required int Id { get; set; }
+    public int Id { get; set; }
     public required int GameId { get; set; }
     public required int AuthorId { get; set; }
     public required double Mark { get; set; }

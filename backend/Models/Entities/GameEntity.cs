@@ -2,7 +2,7 @@ namespace backend.Models.Entities;
 
 public class GameEntity
 {
-    public required int Id { get; set; }
+    public int Id { get; set; }
     public required string Name { get; set; }
     public string? Description { get; set; }
     public int DeveloperId { get; set; }
