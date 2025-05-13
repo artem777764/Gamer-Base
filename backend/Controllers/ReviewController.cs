@@ -1,9 +1,5 @@
-using System.Threading.Tasks;
 using backend.DTOs.ReviewDTOs;
-using backend.Interfaces.IRepositories;
 using backend.Interfaces.IServices;
-using backend.Models.Entities;
-using backend.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers;
@@ -12,13 +8,11 @@ namespace backend.Controllers;
 [Route("Review")]
 public class ReviewController : ControllerBase
 {
-    private readonly IReviewRepository _reviewRepository;
     private readonly IReviewService _reviewService;
     
-    public ReviewController(IReviewService reviewService, IReviewRepository reviewRepository)
+    public ReviewController(IReviewService reviewService)
     {
         _reviewService = reviewService;
-        _reviewRepository = reviewRepository;
     }
 
     [HttpGet("{id}")]

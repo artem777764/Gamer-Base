@@ -31,7 +31,7 @@ public class ReviewRepository : IReviewRepository
 
     public async Task<int> CreateAsync(ReviewEntity entity)
     {
-        await _postgresDb.AddAsync(entity);
+        await _postgresDb.Reviews.AddAsync(entity);
         await _postgresDb.SaveChangesAsync();
         return entity.Id;
     }
