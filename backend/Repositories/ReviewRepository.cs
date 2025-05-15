@@ -41,7 +41,7 @@ public class ReviewRepository : IReviewRepository
         ReviewEntity? review = await _postgresDb.Reviews.FindAsync(entity.Id);
         if (review == null) return false;
 
-        _postgresDb.Entry(review).CurrentValues.SetValues(entity);
+        _postgresDb.Reviews.Entry(review).CurrentValues.SetValues(entity);
         await _postgresDb.SaveChangesAsync();
         return true;
     }

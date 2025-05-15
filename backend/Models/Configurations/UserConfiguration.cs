@@ -33,7 +33,8 @@ class UserConfiguration : IEntityTypeConfiguration<UserEntity>
        
        builder.HasOne(u => u.UserData)
               .WithOne(ud => ud.User)
-              .HasForeignKey<UserDataEntity>(ud => ud.Id);
+              .HasForeignKey<UserDataEntity>(ud => ud.Id)
+              .OnDelete(DeleteBehavior.Cascade);
        
        builder.HasMany(u => u.NotificationsUser)
               .WithOne(nu => nu.User)

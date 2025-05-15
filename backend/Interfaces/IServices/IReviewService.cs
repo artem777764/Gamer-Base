@@ -1,4 +1,5 @@
 using backend.DTOs.ReviewDTOs;
+using backend.DTOs.UserDTOs;
 
 namespace backend.Interfaces.IServices;
 

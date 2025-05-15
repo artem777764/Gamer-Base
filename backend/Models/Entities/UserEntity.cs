@@ -2,7 +2,7 @@ namespace backend.Models.Entities;
 
 public class UserEntity
 {
-    public required int Id { get; set; }
+    public int Id { get; set; }
     public required string Email { get; set; }
     public required string HashPassword { get; set; }
 

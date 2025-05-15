@@ -41,7 +41,7 @@ public class CommentRepository : ICommentRepository
         CommentEntity? comment = await _postgresDb.Comments.FindAsync(entity.Id);
         if (comment == null) return false;
 
-        _postgresDb.Entry(comment).CurrentValues.SetValues(entity);
+        _postgresDb.Comments.Entry(comment).CurrentValues.SetValues(entity);
         await _postgresDb.SaveChangesAsync();
         return true;
     }

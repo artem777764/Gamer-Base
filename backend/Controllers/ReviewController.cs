@@ -1,4 +1,5 @@
 using backend.DTOs.ReviewDTOs;
+using backend.DTOs.UserDTOs;
 using backend.Interfaces.IServices;
 using Microsoft.AspNetCore.Mvc;
 
