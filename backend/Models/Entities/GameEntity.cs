@@ -4,7 +4,7 @@ public class GameEntity
 {
     public int Id { get; set; }
     public required string Name { get; set; }
-    public string? Description { get; set; }
+    public required string Description { get; set; }
     public int DeveloperId { get; set; }
     public int PublisherId { get; set; }
     public double Rating { get; set; }

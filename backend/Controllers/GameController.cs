@@ -20,4 +20,10 @@ public class GameController : ControllerBase
     {
         return Ok(await _gameService.GetActivityByGameAsync(gameId));
     }
+
+    [HttpGet("{gameId}")]
+    public async Task<IActionResult> GetByIdAsync([FromRoute] int gameId)
+    {
+        return Ok(await _gameService.GetByIdAsync(gameId));
+    }
 }

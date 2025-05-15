@@ -68,4 +68,17 @@ public class GameRepository : IGameRepository
 
         return result;
     }
+
+    public async Task<GameEntity?> GetByIdAsync(int gameId)
+    {
+        return await _postgresDb.Games.Include(g => g.GameGenres)
+                                .ThenInclude(gg => gg.Genre)
+                                .Include(g => g.Developer)
+                                .Include(g => g.Publisher)
+                                .Include(g => g.GamePlatforms)
+                                .ThenInclude(gp => gp.Platform)
+                                .Include(g => g.Reviews)
+                                .Where(g => g.Id == gameId)
+                                .FirstOrDefaultAsync();
+    }
 }
