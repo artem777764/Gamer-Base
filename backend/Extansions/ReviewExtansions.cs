@@ -34,6 +34,7 @@ public static class ReviewExtansions
         return new()
         {
             Id = entity.Id,
+            UserId = entity.AuthorId,
             UserName = entity.User.UserData.Login,
             Mark = entity.Mark,
             Title = entity.Title,

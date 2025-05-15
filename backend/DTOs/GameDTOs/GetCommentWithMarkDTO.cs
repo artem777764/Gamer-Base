@@ -1,6 +1,6 @@
-namespace backend.DTOs.CommentDTOs;
+namespace backend.DTOs.GameDTOs;
 
-public record GetCommentDTO
+public record GetCommentWithMarkDTO
 {
     public required int Id { get; set; }
     public required int UserId { get; set; }
@@ -8,4 +8,5 @@ public record GetCommentDTO
     public required string Content { get; set; }
     public required DateTime Date { get; set; }
     public required int Rating { get; set; }
+    public double? UserMark { get; set; }
 }

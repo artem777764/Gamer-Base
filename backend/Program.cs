@@ -35,10 +35,11 @@ builder.Services.AddDbContext<PostgresDbContext>(options =>
 
 builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
-builder.Services.AddScoped<ISocialActivityService, SocialActivityService>();
+builder.Services.AddScoped<IGameService, GameService>();
 
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+builder.Services.AddScoped<IGameRepository, GameRepository>();
 
 var app = builder.Build();
 

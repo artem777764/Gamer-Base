@@ -10,6 +10,7 @@ public static class CommentExtansions
         return new()
         {
             Id = entity.Id,
+            UserId = entity.UserId,
             UserName = entity.User.UserData.Login,
             Content = entity.Content,
             Date = entity.Date,

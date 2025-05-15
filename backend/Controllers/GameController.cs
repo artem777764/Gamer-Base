@@ -8,16 +8,16 @@ namespace backend.Controllers;
 [Route("Game")]
 public class GameController : ControllerBase
 {
-    private readonly ISocialActivityService _socialActivityService;
+    private readonly IGameService _gameService;
     
-    public GameController(ISocialActivityService socialActivityService)
+    public GameController(IGameService gameService)
     {
-        _socialActivityService = socialActivityService;
+        _gameService = gameService;
     }
 
     [HttpGet("Activity/{gameId}")]
     public async Task<IActionResult> GetReviewWithComments([FromRoute] int gameId)
     {
-        return Ok(await _socialActivityService.GetActivityByGameAsync(gameId));
+        return Ok(await _gameService.GetActivityByGameAsync(gameId));
     }
 }
