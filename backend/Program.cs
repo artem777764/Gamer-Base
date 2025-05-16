@@ -5,6 +5,7 @@ using backend.Repositories;
 using backend.Services;
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 
 Env.Load();
 
@@ -29,19 +30,27 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.WriteIndented = false;
     });
 
-var connectionString = Environment.GetEnvironmentVariable("POSTGRES_CONNECTION");
 builder.Services.AddDbContext<PostgresDbContext>(options =>
-    options.UseNpgsql(connectionString));
+    options.UseNpgsql(Environment.GetEnvironmentVariable("POSTGRES_CONNECTION")!));
+
+builder.Services.AddSingleton<IMongoClient>(sp =>
+{
+    return new MongoClient(Environment.GetEnvironmentVariable("MONGO_CONNECTION")!);
+});
+builder.Services.AddSingleton<MongoDbContext>();
 
 builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddScoped<IOurAuthorizationService, AuthorizationService>();
+builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddSingleton<ContentTypeService>();
 
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IImageRepository, ImageRepository>();
 
 var app = builder.Build();
 
