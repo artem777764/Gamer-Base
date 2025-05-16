@@ -7,4 +7,7 @@ public interface IGameRepository
 {
     Task<List<GetReviewWithComments>?> GetByGameAsync(int gameId);
     Task<GameEntity?> GetByIdAsync(int gameId);
+    Task<int> CreateAsync(GameEntity game);
+    Task AddPlatforms(List<GamePlatformsEntity> entities);
+    Task AddGenres(List<GameGenresEntity> genres);
 }

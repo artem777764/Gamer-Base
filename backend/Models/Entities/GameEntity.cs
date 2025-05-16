@@ -7,7 +7,7 @@ public class GameEntity
     public required string Description { get; set; }
     public int DeveloperId { get; set; }
     public int PublisherId { get; set; }
-    public double Rating { get; set; }
+    public string? ImageId { get; set; }
     public DateOnly ReleaseDate { get; set; }
     public DeveloperEntity Developer { get; set; } = null!;
     public PublisherEntity Publisher { get; set; } = null!;

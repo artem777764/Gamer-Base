@@ -26,4 +26,9 @@ public class ImageService : IImageService
     {
         return await _imageRepository.DownloadAsync(fileId);
     }
+
+    public async Task<bool> Remove(string fileId)
+    {
+        return await _imageRepository.Remove(fileId);
+    }
 }

@@ -17,13 +17,13 @@ public class GameRepository : IGameRepository
     public async Task<List<GetReviewWithComments>?> GetByGameAsync(int gameId)
     {
         bool gameExists = await _postgresDb.Games.AnyAsync(g => g.Id == gameId);
-        if(!gameExists) return null;
-        
+        if (!gameExists) return null;
+
         List<ReviewEntity> reviews = await _postgresDb.Reviews.Include(r => r.User)
                                                               .ThenInclude(u => u.UserData)
                                                               .Where(r => r.GameId == gameId)
                                                               .ToListAsync();
-        
+
         List<int> reviewIds = reviews.Select(r => r.Id)
                                      .ToList();
 
@@ -35,7 +35,7 @@ public class GameRepository : IGameRepository
                                                                  .Include(c => c.User)
                                                                  .ThenInclude(u => u.UserData)
                                                                  .ToListAsync();
-        
+
         List<ReviewEntity> userMarks = await _postgresDb.Reviews.Where(r => r.GameId == gameId && userIds.Contains(r.AuthorId))
                                                                 .ToListAsync();
 
@@ -52,17 +52,17 @@ public class GameRepository : IGameRepository
             Comments = comments.Where(c => c.ReviewId == r.Id)
                                .Select(c =>
                                {
-                                    var userMark = userMarks.FirstOrDefault(m => m.AuthorId == c.UserId);
-                                    return new GetCommentWithMarkDTO
-                                    {
-                                        Id = c.Id,
-                                        UserId = c.UserId,
-                                        UserName = c.User.UserData.Login,
-                                        Content = c.Content,
-                                        Date = c.Date,
-                                        Rating = c.Rating,
-                                        UserMark = userMark?.Mark
-                                    };
+                                   var userMark = userMarks.FirstOrDefault(m => m.AuthorId == c.UserId);
+                                   return new GetCommentWithMarkDTO
+                                   {
+                                       Id = c.Id,
+                                       UserId = c.UserId,
+                                       UserName = c.User.UserData.Login,
+                                       Content = c.Content,
+                                       Date = c.Date,
+                                       Rating = c.Rating,
+                                       UserMark = userMark?.Mark
+                                   };
                                }).ToList()
         }).ToList();
 
@@ -80,5 +80,24 @@ public class GameRepository : IGameRepository
                                 .Include(g => g.Reviews)
                                 .Where(g => g.Id == gameId)
                                 .FirstOrDefaultAsync();
+    }
+
+    public async Task<int> CreateAsync(GameEntity game)
+    {
+        await _postgresDb.Games.AddAsync(game);
+        await _postgresDb.SaveChangesAsync();
+        return game.Id;
+    }
+
+    public async Task AddPlatforms(List<GamePlatformsEntity> entities)
+    {
+        await _postgresDb.GamePlatforms.AddRangeAsync(entities);
+        await _postgresDb.SaveChangesAsync();
+    }
+
+    public async Task AddGenres(List<GameGenresEntity> genres)
+    {
+        await _postgresDb.GameGenres.AddRangeAsync(genres);
+        await _postgresDb.SaveChangesAsync();
     }
 }

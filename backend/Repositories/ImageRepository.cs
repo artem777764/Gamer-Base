@@ -31,13 +31,13 @@ public class ImageRepository : IImageRepository
 
     public async Task<FileDownloadResult?> DownloadAsync(string fileId)
     {
-        var objectId = ObjectId.Parse(fileId);
+        ObjectId objectId = ObjectId.Parse(fileId);
 
-        var fileInfo = await _mongoDb.Find(Builders<GridFSFileInfo>.Filter.Eq(f => f.Id, objectId))
+        GridFSFileInfo fileInfo = await _mongoDb.Find(Builders<GridFSFileInfo>.Filter.Eq(f => f.Id, objectId))
                                      .FirstOrDefaultAsync();
         if (fileInfo == null) return null;
 
-        var stream = new MemoryStream();
+        Stream stream = new MemoryStream();
         await _mongoDb.DownloadToStreamAsync(objectId, stream);
         stream.Position = 0;
 
@@ -50,5 +50,17 @@ public class ImageRepository : IImageRepository
             ContentType = contentType,
             FileName = fileName
         };
+    }
+
+    public async Task<bool> Remove(string fileId)
+    {
+        ObjectId objectId = ObjectId.Parse(fileId);
+
+        GridFSFileInfo fileInfo = await _mongoDb.Find(Builders<GridFSFileInfo>.Filter.Eq(f => f.Id, objectId))
+                                                .FirstOrDefaultAsync();
+        if (fileInfo == null) return false;
+
+        await _mongoDb.DeleteAsync(objectId);
+        return true;
     }
 }

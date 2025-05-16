@@ -1,4 +1,5 @@
 using backend.DTOs.CommentDTOs;
+using backend.DTOs.GameDTOs;
 using backend.Interfaces.IServices;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +10,7 @@ namespace backend.Controllers;
 public class GameController : ControllerBase
 {
     private readonly IGameService _gameService;
-    
+
     public GameController(IGameService gameService)
     {
         _gameService = gameService;
@@ -25,5 +26,13 @@ public class GameController : ControllerBase
     public async Task<IActionResult> GetByIdAsync([FromRoute] int gameId)
     {
         return Ok(await _gameService.GetByIdAsync(gameId));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] CreateGameDTO dto)
+    {
+        int? id = await _gameService.CreateAsync(dto);
+        if (id == null) return NotFound();
+        return Ok(id);
     }
 }

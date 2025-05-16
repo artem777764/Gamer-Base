@@ -23,7 +23,7 @@ public class ImageController : ControllerBase
     {
         ObjectId? objectId = await _imageService.Upload(path);
         if (objectId == null) return NotFound();
-        return Ok(ObjectId.Parse(objectId.ToString()));
+        return Ok(objectId.ToString()); // работает?
     }
 
     [HttpGet("Download/{id}")]
@@ -32,5 +32,13 @@ public class ImageController : ControllerBase
         FileDownloadResult? result = await _imageService.Download(id);
         if (result == null) return NotFound();
         return File(result.Stream, result.ContentType, result.FileName);
+    }
+
+    [HttpDelete("Remove/{id}")]
+    public async Task<IActionResult> Remove([FromRoute] string id)
+    {
+        bool successfully = await _imageService.Remove(id);
+        if (!successfully) return NotFound();
+        return Ok();
     }
 }

@@ -6,4 +6,5 @@ public interface IImageService
 {
     Task<ObjectId?> Upload(string path);
     Task<FileDownloadResult?> Download(string fileId);
+    Task<bool> Remove(string fileId);
 }
