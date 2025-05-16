@@ -5,8 +5,10 @@ public class UserEntity
     public int Id { get; set; }
     public required string Email { get; set; }
     public required string HashPassword { get; set; }
+    public required int RoleId { get; set; }
 
     public UserDataEntity UserData { get; set; } = null!;
+    public RoleEntity Role { get; set; } = null!;
     public List<FavouriteGamesEntity> FavouriteGames { get; set; } = new List<FavouriteGamesEntity>();
     public List<ReviewEntity> Reviews { get; set; } = new List<ReviewEntity>();
     public List<VoteReviewEntity> VotesReview { get; set; } = new List<VoteReviewEntity>();

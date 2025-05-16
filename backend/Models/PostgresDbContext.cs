@@ -18,6 +18,7 @@ public class PostgresDbContext : DbContext
     public DbSet<PlatformEntity> Platforms { get; set; } = null!;
     public DbSet<PublisherEntity> Publishers { get; set; } = null!;
     public DbSet<ReviewEntity> Reviews { get; set; } = null!;
+    public DbSet<RoleEntity> Roles { get; set; } = null!;
     public DbSet<UserDataEntity> UserData { get; set; } = null!;
     public DbSet<UserEntity> Users { get; set; } = null!;
     public DbSet<VoteCommentEntity> VotesComment { get; set; } = null!;
@@ -39,6 +40,7 @@ public class PostgresDbContext : DbContext
         modelBuilder.ApplyConfiguration(new PlatformConfiguration());
         modelBuilder.ApplyConfiguration(new PublisherConfiguration());
         modelBuilder.ApplyConfiguration(new ReviewConfiguration());
+        modelBuilder.ApplyConfiguration(new RoleConfiguration());
         modelBuilder.ApplyConfiguration(new UserConfiguration());
         modelBuilder.ApplyConfiguration(new UserDataConfiguration());
         modelBuilder.ApplyConfiguration(new VoteCommentConfiguration());

@@ -14,10 +14,13 @@ public static class GameExtansions
             Id = entity.Id,
             Name = entity.Name,
             Description = entity.Description,
+            Platforms = entity.GamePlatforms.Select(gg => gg.Platform.Name).ToList(),
             Genres = entity.GameGenres.Select(gg => gg.Genre.Name).ToList(),
             Developer = entity.Developer.Name,
             Publisher = entity.Publisher.Name,
             ReleaseDate = entity.ReleaseDate,
+            ImageURL = $"http://localhost:5007/Image/Download/{entity.ImageId}",
+            Rating = entity.Reviews.Any() ? entity.Reviews.Sum(r => r.Mark) / entity.Reviews.Count() : null,
         };
     }
 

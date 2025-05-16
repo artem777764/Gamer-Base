@@ -12,6 +12,7 @@ public static class UserExtansions
         {
             Email = userDTO.Email,
             HashPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(userDTO.Password),
+            RoleId = userDTO.RoleId,
             UserData = new()
             {
                 Login = userDTO.Login,
