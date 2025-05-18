@@ -11,17 +11,24 @@ public class AuthorizationService : IOurAuthorizationService
     private readonly IUserRepository _userRepository;
     private readonly IEncryptionService _encryptionService;
     private readonly IJwtService _jwtSevice;
-    public AuthorizationService(IUserRepository userRepository, IEncryptionService encryptionService, IJwtService jwtService)
+    private readonly IValidationService _validationService;
+    public AuthorizationService(IUserRepository userRepository, IEncryptionService encryptionService, IJwtService jwtService, IValidationService validationService)
     {
         _userRepository = userRepository;
         _encryptionService = encryptionService;
         _jwtSevice = jwtService;
+        _validationService = validationService;
     }
 
     public async Task<int?> RegisterAsync(CreateUserDTO dto)
     {
         if (await _userRepository.ExistsByEmailAsync(dto.Email)) return null;
         if (await _userRepository.ExistsByLoginAsync(dto.Email)) return null;
+
+        if (_validationService.IsValidEmail(dto.Email)) return null;
+        if (_validationService.IsValidLogin(dto.Login)) return null;
+        if (_validationService.IsValidPassword(dto.Password)) return null;
+
         return await _userRepository.CreateAsync(dto.ToEntity(_encryptionService.HashPassword(dto.Password)));
     }
 

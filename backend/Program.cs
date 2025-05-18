@@ -81,6 +81,7 @@ builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddSingleton<ContentTypeService>();
 builder.Services.AddSingleton<IEncryptionService, EncryptionService>();
 builder.Services.AddSingleton<IJwtService, JwtService>();
+builder.Services.AddSingleton<IValidationService, ValidationService>();
 
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
