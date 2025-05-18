@@ -1,6 +1,7 @@
 using backend.DTOs.ReviewDTOs;
 using backend.DTOs.UserDTOs;
 using backend.Interfaces.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
@@ -18,12 +19,13 @@ public class ImageController : ControllerBase
         _imageService = imageService;
     }
 
+    [Authorize]
     [HttpPost("Upload")]
     public async Task<IActionResult> Upload([FromQuery] string path)
     {
         ObjectId? objectId = await _imageService.Upload(path);
         if (objectId == null) return NotFound();
-        return Ok(objectId.ToString()); // работает?
+        return Ok(objectId.ToString());
     }
 
     [HttpGet("Download/{id}")]
@@ -34,6 +36,7 @@ public class ImageController : ControllerBase
         return File(result.Stream, result.ContentType, result.FileName);
     }
 
+    [Authorize]
     [HttpDelete("Remove/{id}")]
     public async Task<IActionResult> Remove([FromRoute] string id)
     {

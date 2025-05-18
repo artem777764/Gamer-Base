@@ -6,12 +6,12 @@ namespace backend.Extansions;
 
 public static class UserExtansions
 {
-    public static UserEntity ToEntity(this CreateUserDTO userDTO)
+    public static UserEntity ToEntity(this CreateUserDTO userDTO, string hashedPassword)
     {
         return new()
         {
             Email = userDTO.Email,
-            HashPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(userDTO.Password),
+            HashPassword = hashedPassword,
             RoleId = userDTO.RoleId,
             UserData = new()
             {

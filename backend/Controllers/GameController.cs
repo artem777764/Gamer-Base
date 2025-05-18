@@ -1,6 +1,8 @@
 using backend.DTOs.CommentDTOs;
 using backend.DTOs.GameDTOs;
 using backend.Interfaces.IServices;
+using backend.Migrations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers;
@@ -28,11 +30,12 @@ public class GameController : ControllerBase
         return Ok(await _gameService.GetByIdAsync(gameId));
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateGameDTO dto)
     {
         int? id = await _gameService.CreateAsync(dto);
         if (id == null) return NotFound();
-        return Ok(id);
+        return Ok(new IdDTO(id.Value));
     }
 }

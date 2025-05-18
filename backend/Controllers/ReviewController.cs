@@ -1,6 +1,7 @@
 using backend.DTOs.ReviewDTOs;
 using backend.DTOs.UserDTOs;
 using backend.Interfaces.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers;
@@ -30,12 +31,14 @@ public class ReviewController : ControllerBase
         return Ok(await _reviewService.GetByGameAsync(id));
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateReviewDTO dto)
     {
         return Ok(await _reviewService.CreateAsync(dto));
     }
 
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateReviewDTO dto)
     {
@@ -43,6 +46,7 @@ public class ReviewController : ControllerBase
         return NotFound();
     }
 
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete([FromRoute] int id)
     {

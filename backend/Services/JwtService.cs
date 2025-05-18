@@ -8,7 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace backend.Services;
 
-public class JwtService
+public class JwtService : IJwtService
 {
     private readonly string _secretKey;
     private readonly string _issuer;
@@ -22,7 +22,7 @@ public class JwtService
         _audience = options.Value.Audience;
         _expireHours = options.Value.ExpireHours;
     }
-    
+
     public string GenerateToken(UserEntity user)
     {
         Claim[] claims = {
@@ -44,5 +44,10 @@ public class JwtService
         );
         var TokenValue = new JwtSecurityTokenHandler().WriteToken(Token);
         return TokenValue;
+    }
+
+    public int GetExpireHours()
+    {
+        return _expireHours;
     }
 }

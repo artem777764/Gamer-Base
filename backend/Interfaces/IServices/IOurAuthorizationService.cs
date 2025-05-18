@@ -4,5 +4,6 @@ namespace backend.Interfaces.IServices;
 
 public interface IOurAuthorizationService
 {
-    Task<int?> Register(CreateUserDTO dto);
+    Task<int?> RegisterAsync(CreateUserDTO dto);
+    Task<AuthResult?> LoginAsync(LoginUserDTO dto);
 }

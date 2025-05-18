@@ -79,6 +79,8 @@ builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddScoped<IOurAuthorizationService, AuthorizationService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddSingleton<ContentTypeService>();
+builder.Services.AddSingleton<IEncryptionService, EncryptionService>();
+builder.Services.AddSingleton<IJwtService, JwtService>();
 
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
@@ -99,6 +101,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseRouting();
 app.MapControllers();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseHttpsRedirection();
 

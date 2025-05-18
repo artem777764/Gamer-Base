@@ -1,5 +1,6 @@
 using backend.DTOs.CommentDTOs;
 using backend.Interfaces.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers;
@@ -29,12 +30,14 @@ public class CommentController : ControllerBase
         return Ok(await _commentService.GetByReviewAsync(id));
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateCommentDTO dto)
     {
         return Ok(await _commentService.CreateAsync(dto));
     }
 
+    [Authorize]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCommentDTO dto)
     {
@@ -42,6 +45,7 @@ public class CommentController : ControllerBase
         return NotFound();
     }
 
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete([FromRoute] int id)
     {

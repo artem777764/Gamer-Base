@@ -30,6 +30,19 @@ public class UserRepository : IUserRepository
         return await _postgresDb.UserData.AnyAsync(ud => ud.Login == login);
     }
 
+    public async Task<UserEntity?> GetByEmailAsync(string email)
+    {
+        return await _postgresDb.Users.Include(u => u.Role)
+                                      .FirstOrDefaultAsync(u => u.Email == email);
+    }
+
+    public async Task<UserEntity?> GetByLoginAsync(string login)
+    {
+        return await _postgresDb.Users.Include(u => u.UserData)
+                                      .Include(u => u.Role)
+                                      .FirstOrDefaultAsync(u => u.UserData.Login == login);
+    }
+
     public async Task<int> CreateAsync(UserEntity entity)
     {
         await _postgresDb.Users.AddAsync(entity);
