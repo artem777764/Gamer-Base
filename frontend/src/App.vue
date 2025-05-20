@@ -1,17 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import MyForm from '@/components/MyForm.vue'
-import SignedButton from '@/components/SignedButton.vue'
+import { useRoute } from 'vue-router'
+const hideNavigation = ['/register']
+const route = useRoute()
 </script>
 
 <template>
-  <MyForm>
-    <p class="font-russo leading-none text-white text-3xl text-center">Gamer Base</p>
-    <MyInput placeholder="Email" v-model="test"></MyInput>
-    <MyInput placeholder="Login"></MyInput>
-    <MyInput placeholder="Password" is-password></MyInput>
-    <SignedButton sign="Уже есть аккаунт?" class="">Зарегистрироваться</SignedButton>
-  </MyForm>
+  <router-link to="/register" v-if="!hideNavigation.includes(route.path)">О нас</router-link>
+  <router-view></router-view>
 </template>
 
 <style>
