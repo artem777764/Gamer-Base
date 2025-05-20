@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import MyButton from '@/components/MyButton.vue';
-import MyInput from '@/components/MyInput.vue';
 import { ref } from 'vue';
 const test = ref("f");
 </script>
