@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-const test = ref("f");
+import MyForm from '@/components/MyForm.vue'
+import SignedButton from '@/components/SignedButton.vue'
 </script>
 
 <template>
-  <h1>{{ test }}</h1>
-  <MyInput placeholder="Email" v-model="test"></MyInput>
-  <MyInput placeholder="Login"></MyInput>
-  <MyInput placeholder="Password" is-password></MyInput>
-  <MyButton>Зарегистрироваться</MyButton>
+  <MyForm>
+    <p class="font-russo leading-none text-white text-3xl text-center">Gamer Base</p>
+    <MyInput placeholder="Email" v-model="test"></MyInput>
+    <MyInput placeholder="Login"></MyInput>
+    <MyInput placeholder="Password" is-password></MyInput>
+    <SignedButton sign="Уже есть аккаунт?" class="">Зарегистрироваться</SignedButton>
+  </MyForm>
 </template>
 
 <style>
