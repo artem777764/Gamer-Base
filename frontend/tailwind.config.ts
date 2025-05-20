@@ -10,11 +10,8 @@ const config: Config = {
         russo: ['"Russo One"', 'sans-serif'],
       },
       colors: {
-        primary: '#154D66', // тёмно-синий
-        secondary: '#64748b', // серо-синий
-        accent: '#f59e0b', // жёлто-оранжевый
-        background: '#f8fafc', // светлый фон
-        danger: colors.rose['600'], // пример использования встроенных цветов tailwind
+        primary: '#154D66',
+        background: '#132F3B',
       },
     },
   },

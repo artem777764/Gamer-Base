@@ -1,9 +1,15 @@
 <script setup lang="ts">
-import TestComponent from '@/components/TestComponent.vue';
 import MyButton from '@/components/MyButton.vue';
+import MyInput from '@/components/MyInput.vue';
+import { ref } from 'vue';
+const test = ref("f");
 </script>
 
 <template>
+  <h1>{{ test }}</h1>
+  <MyInput placeholder="Email" v-model="test"></MyInput>
+  <MyInput placeholder="Login"></MyInput>
+  <MyInput placeholder="Password" is-password></MyInput>
   <MyButton>Зарегистрироваться</MyButton>
 </template>
 
