@@ -6,8 +6,11 @@ const config: Config = {
   content: ['./index.html', './src/**/*.{vue,js,ts}'],
   theme: {
     extend: {
+      fontFamily: {
+        russo: ['"Russo One"', 'sans-serif'],
+      },
       colors: {
-        primary: '#1e40af', // тёмно-синий
+        primary: '#154D66', // тёмно-синий
         secondary: '#64748b', // серо-синий
         accent: '#f59e0b', // жёлто-оранжевый
         background: '#f8fafc', // светлый фон
