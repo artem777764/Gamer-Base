@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-const hideNavigation = ['/register']
+const hideNavigation = ['/register', '/login']
 const route = useRoute()
 </script>
 
