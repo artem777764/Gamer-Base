@@ -1,9 +1,10 @@
+using backend.DTOs.AuthorizationDTOs;
 using backend.DTOs.UserDTOs;
 
 namespace backend.Interfaces.IServices;
 
 public interface IOurAuthorizationService
 {
-    Task<int?> RegisterAsync(CreateUserDTO dto);
-    Task<AuthResult?> LoginAsync(LoginUserDTO dto);
+    Task<RegisterResult> RegisterAsync(CreateUserDTO dto);
+    Task<LoginResult> LoginAsync(LoginUserDTO dto);
 }

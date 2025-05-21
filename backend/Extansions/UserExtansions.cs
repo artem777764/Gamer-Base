@@ -12,7 +12,7 @@ public static class UserExtansions
         {
             Email = userDTO.Email,
             HashPassword = hashedPassword,
-            RoleId = userDTO.RoleId,
+            RoleId = userDTO.RoleId ?? 1,
             UserData = new()
             {
                 Login = userDTO.Login,

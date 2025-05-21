@@ -1,3 +1,4 @@
+using backend.DTOs.AuthorizationDTOs;
 using backend.DTOs.UserDTOs;
 using backend.Extansions;
 using backend.Interfaces.IRepositories;
@@ -20,30 +21,26 @@ public class AuthorizationService : IOurAuthorizationService
         _validationService = validationService;
     }
 
-    public async Task<int?> RegisterAsync(CreateUserDTO dto)
+    public async Task<RegisterResult> RegisterAsync(CreateUserDTO dto)
     {
-        if (await _userRepository.ExistsByEmailAsync(dto.Email)) return null;
-        if (await _userRepository.ExistsByLoginAsync(dto.Email)) return null;
+        if (await _userRepository.ExistsByEmailAsync(dto.Email)) return new RegisterResult("Email уже занят");
+        if (await _userRepository.ExistsByLoginAsync(dto.Login)) return new RegisterResult("Login уже занят");
 
-        if (_validationService.IsValidEmail(dto.Email)) return null;
-        if (_validationService.IsValidLogin(dto.Login)) return null;
-        if (_validationService.IsValidPassword(dto.Password)) return null;
+        if (!_validationService.IsValidEmail(dto.Email)) return new RegisterResult("Email некорректен");
+        if (!_validationService.IsValidLogin(dto.Login)) return new RegisterResult("Login некорректен");
+        if (!_validationService.IsValidPassword(dto.Password)) return new RegisterResult("Пароль некорректен");
 
-        return await _userRepository.CreateAsync(dto.ToEntity(_encryptionService.HashPassword(dto.Password)));
+        int userId = await _userRepository.CreateAsync(dto.ToEntity(_encryptionService.HashPassword(dto.Password)));
+        return new RegisterResult(userId);
     }
 
-    public async Task<AuthResult?> LoginAsync(LoginUserDTO dto)
+    public async Task<LoginResult> LoginAsync(LoginUserDTO dto)
     {
         UserEntity? user = await _userRepository.GetByEmailAsync(dto.UserName);
         user ??= await _userRepository.GetByLoginAsync(dto.UserName);
-        if (user == null) return null;
+        if (user == null) return new LoginResult("Пользователь не найден");
 
-        if (!_encryptionService.VerifyPassword(dto.Password, user.HashPassword)) return null;
-        return new()
-        {
-            UserId = user.Id,
-            jwtToken = _jwtSevice.GenerateToken(user),
-            ExpireHours = _jwtSevice.GetExpireHours(),
-        };
+        if (!_encryptionService.VerifyPassword(dto.Password, user.HashPassword)) return new LoginResult("Неверный пароль");
+        return new LoginResult(user.Id, _jwtSevice.GenerateToken(user), _jwtSevice.GetExpireHours());
     }
 }

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using backend.DTOs.AuthorizationDTOs;
 using backend.DTOs.ReviewDTOs;
 using backend.DTOs.UserDTOs;
 using backend.Interfaces.IServices;
@@ -21,23 +22,23 @@ public class AuthorizationController : ControllerBase
     [HttpPost("Register")]
     public async Task<IActionResult> CreateUser([FromBody] CreateUserDTO dto)
     {
-        int? userId = await _authorizationService.RegisterAsync(dto);
-        if (userId == null) return Conflict();
-        return Ok(new IdDTO(userId.Value));
+        RegisterResult registerResult = await _authorizationService.RegisterAsync(dto);
+        if (registerResult.UserId == null) return Conflict(registerResult);
+        return Ok(registerResult);
     }
 
     [HttpPost("Login")]
     public async Task<IActionResult> LoginUser([FromBody] LoginUserDTO dto)
     {
-        AuthResult? result = await _authorizationService.LoginAsync(dto);
-        if (result == null) return NotFound();
+        LoginResult loginResult = await _authorizationService.LoginAsync(dto);
+        if (loginResult.UserId == null) return NotFound(loginResult);
 
-        Response.Cookies.Append("jwt", result.jwtToken, new CookieOptions
+        Response.Cookies.Append("jwt", loginResult.JwtToken!, new CookieOptions
         {
             HttpOnly = true,
             Secure = true,
-            Expires = DateTime.UtcNow.AddHours(result.ExpireHours)
+            Expires = DateTime.UtcNow.AddHours(loginResult.ExpireHours)
         });
-        return Ok(new IdDTO(result.UserId));
+        return Ok(loginResult);
     }
 }

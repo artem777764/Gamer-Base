@@ -5,6 +5,7 @@ import RegisterPage from '@/pages/RegisterPage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
 
 const routes: RouteRecordRaw[] = [
+  { path: '/', redirect: '/register'},
   { path: '/register', component: RegisterPage },
   { path: '/login', component: LoginPage },
 ]
