@@ -44,7 +44,7 @@ const handeSubmit = async () => {
 
         setTimeout(() => {
             router.push('/login')
-        }, 2000)
+        }, 1500)
 
     } catch (error: any) {
         message.value = error.response?.data?.Message || 'Что-то пошло не так'
