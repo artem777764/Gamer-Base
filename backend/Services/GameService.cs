@@ -29,6 +29,19 @@ public class GameService : IGameService
         return game.ToDTO();
     }
 
+    public async Task<List<GetGameDTO>> GetGamesByFilterAsync(int page, int size, GetGamesByFilter filter)
+    {
+        List<GameEntity> games = await _gameRepository.GetGamesByFilterAsync(page, size, filter);
+        List<GetGameDTO> gamesDTO = new List<GetGameDTO>();
+
+        return games.Select(game =>
+        {
+            GetGameDTO dto = game.ToDTO();
+            dto.Rating = CalculateRating(game);
+            return dto;
+        }).ToList();
+    }
+
     public async Task<int?> CreateAsync(CreateGameDTO dto)
     {
         ObjectId? objectId = null;
@@ -42,5 +55,11 @@ public class GameService : IGameService
         await _gameRepository.AddPlatforms(dto.ToEntityPlatforms(gameId));
         await _gameRepository.AddGenres(dto.ToEntityGenres(gameId));
         return gameId;
+    }
+
+    public double? CalculateRating(GameEntity game)
+    {
+        if (game.Reviews == null || game.Reviews.Count == 0) return null;
+        return game.Reviews.Sum(r => r.Mark) / (double)game.Reviews.Count;
     }
 }

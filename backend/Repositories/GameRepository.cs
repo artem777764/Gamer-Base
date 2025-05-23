@@ -2,6 +2,7 @@ using backend.DTOs.GameDTOs;
 using backend.Interfaces.IRepositories;
 using backend.Models;
 using backend.Models.Entities;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Repositories;
@@ -80,6 +81,46 @@ public class GameRepository : IGameRepository
                                 .Include(g => g.Reviews)
                                 .Where(g => g.Id == gameId)
                                 .FirstOrDefaultAsync();
+    }
+
+    public async Task<List<GameEntity>> GetGamesByFilterAsync(int page, int size, GetGamesByFilter filter)
+    {
+        var query = _postgresDb.Games.Include(g => g.GameGenres)
+                                     .ThenInclude(gg => gg.Genre)
+                                     .Include(g => g.GamePlatforms)
+                                     .ThenInclude(gp => gp.Platform)
+                                     .Include(g => g.Developer)
+                                     .Include(g => g.Publisher)
+                                     .Include(g => g.Reviews)
+                                     .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(filter.Name))
+        {
+            query = query.Where(g => g.Name.ToLower().Contains(filter.Name.ToLower()));
+        }
+
+        if (filter.PlatformId.HasValue)
+        {
+            query = query.Where(g => g.GamePlatforms.Any(gp => gp.PlatformId == filter.PlatformId.Value));
+        }
+
+        if (filter.GenreId.HasValue)
+        {
+            query = query.Where(g => g.GameGenres.Any(gg => gg.GenreId == filter.GenreId.Value));
+        }
+
+        if (filter.DeveloperId.HasValue)
+        {
+            query = query.Where(g => g.DeveloperId == filter.DeveloperId.Value);
+        }
+
+        if (filter.PublisherId.HasValue)
+        {
+            query = query.Where(g => g.PublisherId == filter.PublisherId.Value);
+        }
+
+        query = query.Skip((page - 1) * size).Take(size);
+        return await query.ToListAsync();
     }
 
     public async Task<int> CreateAsync(GameEntity game)

@@ -20,7 +20,6 @@ public static class GameExtansions
             Publisher = entity.Publisher.Name,
             ReleaseDate = entity.ReleaseDate,
             ImageURL = $"http://localhost:5007/Image/Download/{entity.ImageId}",
-            Rating = entity.Reviews.Any() ? entity.Reviews.Sum(r => r.Mark) / entity.Reviews.Count() : null,
         };
     }
 
