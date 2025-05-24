@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
-const hideNavigation = ['/register', '/login', '/search-result']
-const route = useRoute()
+//import { useRoute } from 'vue-router'
+//const hideNavigation = ['/register', '/login']
+//const route = useRoute()
 </script>
 
 <template>
-  <router-link to="/register" v-if="!hideNavigation.includes(route.path)">О нас</router-link>
   <router-view></router-view>
 </template>
 

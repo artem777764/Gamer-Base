@@ -27,7 +27,7 @@ public class JwtService : IJwtService
     {
         Claim[] claims = {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Role, user.Role.Id.ToString()),
+            new Claim(ClaimTypes.Role, user.Role.Name),
         };
 
         SigningCredentials signingCredentials = new SigningCredentials(

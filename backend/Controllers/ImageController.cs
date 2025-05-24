@@ -19,7 +19,6 @@ public class ImageController : ControllerBase
         _imageService = imageService;
     }
 
-    [Authorize]
     [HttpPost("Upload")]
     public async Task<IActionResult> Upload([FromQuery] string path)
     {
@@ -36,7 +35,6 @@ public class ImageController : ControllerBase
         return File(result.Stream, result.ContentType, result.FileName);
     }
 
-    [Authorize]
     [HttpDelete("Remove/{id}")]
     public async Task<IActionResult> Remove([FromRoute] string id)
     {

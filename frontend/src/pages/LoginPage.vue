@@ -24,7 +24,7 @@ const handleSubmit = async () => {
         messageColor.value = 'text-green-500'
 
         setTimeout(() => {
-            router.push('/register')
+            router.push('/seacrh-result')
         }, 1500)
     } catch (error: any) {
         message.value = error.response?.data?.Message || 'Что-то пошло не так'

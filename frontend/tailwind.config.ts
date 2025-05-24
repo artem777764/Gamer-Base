@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 import { type Config } from 'tailwindcss'
 import colors from 'tailwindcss/colors'
+import aspectRatio from '@tailwindcss/aspect-ratio'
 
 const config: Config = {
   content: ['./index.html', './src/**/*.{vue,js,ts}'],
@@ -16,7 +17,9 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    aspectRatio,
+  ],
 }
 
 export default config
