@@ -24,7 +24,7 @@ const handleSubmit = async () => {
         messageColor.value = 'text-green-500'
 
         setTimeout(() => {
-            router.push('/seacrh-result')
+            router.push('/search-result')
         }, 1500)
     } catch (error: any) {
         message.value = error.response?.data?.Message || 'Что-то пошло не так'
@@ -37,7 +37,7 @@ const handleSubmit = async () => {
     <div class="min-h-screen bg-background flex justify-center items-center">
         <form @submit.prevent="handleSubmit">
             <MyForm>
-                <p class=" font-russo leading-none text-white text-3xl text-center">Gamer Base</p>
+                <p class=" font-russo leading-none text-shadow text-white text-3xl text-center">Gamer Base</p>
                 <Transition
                     enter-active-class="transition-all duration-500 ease-in-out"
                     enter-from-class="opacity-0 max-h-0"
@@ -60,7 +60,7 @@ const handleSubmit = async () => {
                         Войти
                     </MyButton>
                     <router-link to="/register">
-                        <p class="font-russo leading-none text-gray-300 text-xs underline mt-1">Не зарегистрированны?</p>
+                        <p class="font-russo leading-none text-shadow text-gray-300 text-xs underline mt-1">Не зарегистрированны?</p>
                     </router-link>
                 </div>
             </MyForm>

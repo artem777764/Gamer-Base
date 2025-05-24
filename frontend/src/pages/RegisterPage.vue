@@ -9,6 +9,7 @@ const router = useRouter()
 const email = ref('')
 const login = ref('')
 const password = ref('')
+const passwordConfirm = ref('')
 const message = ref('')
 const messageColor = ref('text-red-500')
 
@@ -29,6 +30,10 @@ const handeSubmit = async () => {
     }
     if(!passwordRegex.test(password.value)) {
         message.value = 'Некорректный пароль'
+        return;
+    }
+    if(password.value != passwordConfirm.value) {
+        message.value = 'Пароли не совпадают'
         return;
     }
 
@@ -56,7 +61,7 @@ const handeSubmit = async () => {
     <div class="min-h-screen bg-background flex justify-center items-center">
         <form @submit.prevent="handeSubmit">
             <MyForm>
-                <p class="font-russo leading-none text-white text-3xl text-center">Gamer Base</p>
+                <p class="font-russo leading-none text-shadow text-white text-3xl text-center">Gamer Base</p>
                 <Transition
                     enter-active-class="transition-all duration-500 ease-in-out"
                     enter-from-class="opacity-0 max-h-0"
@@ -72,15 +77,16 @@ const handeSubmit = async () => {
                         {{ message }}
                     </p>
                 </Transition>
-                <MyInput v-model="email" placeholder="Email"></MyInput>
-                <MyInput v-model="login" placeholder="Login"></MyInput>
-                <MyInput v-model="password" placeholder="Password" is-password></MyInput>
+                <MyInput v-model="email" placeholder="Почта"></MyInput>
+                <MyInput v-model="login" placeholder="Логин"></MyInput>
+                <MyInput v-model="password" placeholder="Пароль" is-password></MyInput>
+                <MyInput v-model="passwordConfirm" placeholder="Повторить пароль" is-password></MyInput>
                 <div class="flex flex-col gap-0 items-center">
                     <MyButton class="w-full" type="submit">
                         Зарегистрироваться
                     </MyButton>
                     <router-link to="/login">
-                        <p class="font-russo leading-none text-gray-300 text-xs underline mt-1">Уже есть аккаунт?</p>
+                        <p class="font-russo leading-none text-shadow text-gray-300 text-xs underline mt-1">Уже есть аккаунт?</p>
                     </router-link>
                 </div>
             </MyForm>

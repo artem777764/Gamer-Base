@@ -19,7 +19,7 @@ const props = defineProps({
 
 const inputClass = computed(() => {
   return [
-    'font-russo rounded text-white p-3 transition duration-150 focus:outline-none focus:brightness-110',
+    'font-russo rounded text-white p-3 shadow-md transition duration-150 focus:outline-none focus:brightness-110',
     props.fontSize,
     props.backgroundColor
   ]

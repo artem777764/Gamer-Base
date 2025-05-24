@@ -5,7 +5,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="w-full aspect-[2/3] overflow-hidden rounded">
+  <div class="w-full aspect-[2/3] overflow-hidden rounded shadow-md">
     <img
       :src="imageSrc"
       alt="Image"
