@@ -32,6 +32,7 @@ public class AuthorizationService : IOurAuthorizationService
         if (!_validationService.IsValidEmail(dto.Email)) return new RegisterResultBuilder().SetMessage("Email некорректен").Build();
         if (!_validationService.IsValidLogin(dto.Login)) return new RegisterResultBuilder().SetMessage("Login некорректен").Build();
         if (!_validationService.IsValidPassword(dto.Password)) return new RegisterResultBuilder().SetMessage("Пароль некорректен").Build();
+        if (dto.Password != dto.PasswordConfirm) return new RegisterResultBuilder().SetMessage("Пароли не совпадают").Build();
 
         int userId = await _userRepository.CreateAsync(dto.ToEntity(_encryptionService.HashPassword(dto.Password)));
         return new RegisterResultBuilder().SetUserId(userId).Build();

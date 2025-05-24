@@ -42,6 +42,7 @@ const handeSubmit = async () => {
             Email: email.value,
             Login: login.value,
             Password: password.value,
+            PasswordConfirm: passwordConfirm.value
         })
 
         message.value = 'Успешная регистрация!'

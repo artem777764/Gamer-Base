@@ -3,6 +3,7 @@ import MyForm from '@/components/MyForm.vue';
 import axios from 'axios';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useUserStore } from '@/stores/user';
 
 const router = useRouter()
 
@@ -13,7 +14,7 @@ const messageColor = ref('text-red-500')
 
 const handleSubmit = async () => {
     try {
-        await axios.post('http://localhost:5007/Authorization/Login', {
+        const response = await axios.post('http://localhost:5007/Authorization/Login', {
             UserName: userName.value,
             Password: password.value,
         }, { withCredentials: true })
@@ -22,6 +23,9 @@ const handleSubmit = async () => {
 
         message.value = 'Успешный вход!'
         messageColor.value = 'text-green-500'
+
+        const userStore = useUserStore()
+        userStore.setUser(response.data.UserId, response.data.RoleId)
 
         setTimeout(() => {
             router.push('/search-result')
