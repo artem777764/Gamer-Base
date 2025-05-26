@@ -1,4 +1,5 @@
 using backend.Models.Entities;
+using MongoDB.Bson;
 
 namespace backend.Interfaces.IRepositories;
 
@@ -12,4 +13,5 @@ public interface IUserRepository
     Task<UserEntity?> GetByIdAsync(int userId);
     Task<UserEntity?> GetByLoginAsync(string login);
     Task<bool> UpdateDataAsync(UserDataEntity entity);
+    Task<bool> UpdateProfilePhotoId(int userId, ObjectId photoId);
 }

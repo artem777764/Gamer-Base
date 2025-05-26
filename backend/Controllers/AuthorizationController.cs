@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Threading.Tasks;
 using backend.DTOs.AuthorizationDTOs;
 using backend.DTOs.ReviewDTOs;
@@ -40,5 +41,20 @@ public class AuthorizationController : ControllerBase
             Expires = DateTime.UtcNow.AddHours(loginResult.ExpireHours)
         });
         return Ok(loginResult);
+    }
+
+    [Authorize]
+    [HttpPut("UpdateProfilePhoto")]
+    [Consumes("multipart/form-data")]
+    public async Task<IActionResult> UpdateProfilePhotoAsync([FromForm] UpdateProfilePhotoDTO dto)
+    {
+        if (dto == null || dto.File.Length == 0) return BadRequest("Файл не выбран");
+
+        Claim? userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null) return Unauthorized();
+
+        bool isSuccessful = await _authorizationService.UpdateProfilePhotoAsync(dto.File, int.Parse(userIdClaim.Value));
+        if (!isSuccessful) return NotFound();
+        return Ok();
     }
 }

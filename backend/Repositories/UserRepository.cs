@@ -2,6 +2,7 @@ using backend.Interfaces.IRepositories;
 using backend.Models;
 using backend.Models.Entities;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson;
 
 namespace backend.Repositories;
 
@@ -67,6 +68,16 @@ public class UserRepository : IUserRepository
         if (user == null) return false;
 
         _postgresDb.Users.Remove(user);
+        await _postgresDb.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<bool> UpdateProfilePhotoId(int userId, ObjectId photoId)
+    {
+        UserDataEntity? userData = await _postgresDb.UserData.FindAsync(userId);
+        if (userData == null) return false;
+
+        userData.ProfileImageId = photoId.ToString();
         await _postgresDb.SaveChangesAsync();
         return true;
     }

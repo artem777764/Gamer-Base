@@ -1,9 +1,12 @@
+using System.Threading.Tasks;
 using backend.DTOs.AuthorizationDTOs;
 using backend.DTOs.UserDTOs;
 using backend.Extansions;
 using backend.Interfaces.IRepositories;
 using backend.Interfaces.IServices;
 using backend.Models.Entities;
+using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 
 namespace backend.Services;
 
@@ -13,15 +16,18 @@ public class AuthorizationService : IOurAuthorizationService
     private readonly IEncryptionService _encryptionService;
     private readonly IJwtService _jwtSevice;
     private readonly IValidationService _validationService;
+    private readonly IImageRepository _imageRepository;
     public AuthorizationService(IUserRepository userRepository,
                                 IEncryptionService encryptionService,
                                 IJwtService jwtService,
-                                IValidationService validationService)
+                                IValidationService validationService,
+                                IImageRepository imageRepository)
     {
         _userRepository = userRepository;
         _encryptionService = encryptionService;
         _jwtSevice = jwtService;
         _validationService = validationService;
+        _imageRepository = imageRepository;
     }
 
     public async Task<RegisterResult> RegisterAsync(CreateUserDTO dto)
@@ -46,12 +52,21 @@ public class AuthorizationService : IOurAuthorizationService
                                                          .Build();
 
         if (!_encryptionService.VerifyPassword(dto.Password, user.HashPassword))
-        return new LoginResultBuilder().SetMessage("Неверный пароль")
-                                       .Build();
+            return new LoginResultBuilder().SetMessage("Неверный пароль")
+                                           .Build();
 
         return new LoginResultBuilder().SetUserId(user.Id)
                                        .SetRoleId(user.Role.Id)
                                        .SetJwtToken(_jwtSevice.GenerateToken(user), _jwtSevice.GetExpireHours())
                                        .Build();
+    }
+
+    public async Task<bool> UpdateProfilePhotoAsync(IFormFile file, int userId)
+    {
+        using Stream stream = new MemoryStream();
+        await file.CopyToAsync(stream);
+
+        ObjectId photoId = await _imageRepository.UploadAsync(stream, file.FileName);
+        return await _userRepository.UpdateProfilePhotoId(userId, photoId);
     }
 }
