@@ -2,17 +2,17 @@
 import { onMounted, ref, watch } from 'vue';
 import axios from 'axios'
 import MyInput from '@/components/ui/MyInput.vue';
-import GameCard from '@/components/GameCard.vue';
+import Card from '@/components/Card.vue';
 
 const name = ref('')
 
 interface Game {
   Id: number
+  Rating: number,
   ImageURL: string
 }
 
 const games = ref<Game[]>([])
-
 
 let debounceTimeout: number | undefined
 watch(name, (newName: string) => {
@@ -54,14 +54,22 @@ onMounted(() => {
             <MyInput v-model="name" background-color="bg-secondary" font-size="text-5xl" placeholder="Поиск..." class="w-full"></MyInput>
         </div>
         <div class="grid grid-cols-4 gap-x-5 px-5 pt-5">
-            <router-link
-                v-for="game in games"
+            <div v-for="game in games"
                 :key="game.Id"
                 :to="`/game-info/${game.Id}`"
-                class="mb-5 w-full block"
-            >
-                <GameCard :image-src="game.ImageURL" class="w-full" />
-            </router-link>
+                class="mb-5 w-full block">
+                <router-link :to="`/game-info/${game.Id}`">
+                    <Card :image-src="game.ImageURL" class="w-full"/>
+                </router-link>
+                <div v-if="game.Rating">
+                    <router-link :to="{ name: 'GameReview', params: { id: game.Id } }">
+                        <p class="font-russo leading-none text-shadow text-white text-3xl underline mt-1 text-center">{{game.Rating.toFixed(2)}}/5.00</p>
+                    </router-link>
+                </div>
+                <div v-else>
+                    <p class="font-russo leading-none text-shadow text-gray-400 text-3xl underline mt-1 text-center">Нет отзывов</p>
+                </div>
+            </div>
         </div>
     </div>
 </template>

@@ -15,6 +15,10 @@ const props = defineProps({
     type: String,
     default: "bg-background",
   },
+  multiline: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const inputClass = computed(() => {
@@ -31,9 +35,21 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <input :value="modelValue"
-  @input="(e) => emit('update:modelValue', (e.target as HTMLInputElement).value)"
-  :type="isPassword ? 'password' : 'text'"
-  :placeholder="placeholder"
-  :class="inputClass">
+  <textarea
+    v-if="multiline"
+    :value="modelValue"
+    @input="(e) => emit('update:modelValue', (e.target as HTMLTextAreaElement).value)"
+    :placeholder="placeholder"
+    :class="inputClass"
+    rows="4"
+  />
+
+  <input
+    v-else
+    :value="modelValue"
+    @input="(e) => emit('update:modelValue', (e.target as HTMLInputElement).value)"
+    :type="isPassword ? 'password' : 'text'"
+    :placeholder="placeholder"
+    :class="inputClass"
+  />
 </template>

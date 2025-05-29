@@ -7,12 +7,12 @@ namespace backend.Extansions;
 
 public static class ReviewExtansions
 {
-    public static ReviewEntity ToEntity(this CreateReviewDTO reviewDTO)
+    public static ReviewEntity ToEntity(this CreateReviewDTO reviewDTO, int userId)
     {
         return new()
         {
             GameId = reviewDTO.GameId,
-            AuthorId = reviewDTO.AuthorId,
+            AuthorId = userId,
             Mark = reviewDTO.Mark,
             Title = reviewDTO.Title,
             Content = reviewDTO.Content,

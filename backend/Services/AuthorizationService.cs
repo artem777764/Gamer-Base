@@ -63,9 +63,7 @@ public class AuthorizationService : IOurAuthorizationService
 
     public async Task<bool> UpdateProfilePhotoAsync(IFormFile file, int userId)
     {
-        using Stream stream = new MemoryStream();
-        await file.CopyToAsync(stream);
-
+        using Stream stream = file.OpenReadStream();
         ObjectId photoId = await _imageRepository.UploadAsync(stream, file.FileName);
         return await _userRepository.UpdateProfilePhotoId(userId, photoId);
     }

@@ -26,7 +26,10 @@ public class GameService : IGameService
     {
         GameEntity? game = await _gameRepository.GetByIdAsync(gameId);
         if (game == null) return null;
-        return game.ToDTO();
+
+        GetGameDTO gameDTO = game.ToDTO();
+        gameDTO.Rating = CalculateRating(game);
+        return gameDTO;
     }
 
     public async Task<List<GetGameDTO>> GetGamesByFilterAsync(int page, int size, GetGamesByFilter filter)

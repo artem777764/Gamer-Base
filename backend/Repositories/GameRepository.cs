@@ -44,6 +44,7 @@ public class GameRepository : IGameRepository
         {
             ReviewId = r.Id,
             UserId = r.AuthorId,
+            UserImageURL = $"http://localhost:5007/Image/Download/{r.User.UserData.ProfileImageId}",
             UserName = r.User.UserData.Login,
             Mark = r.Mark,
             Title = r.Title,
@@ -58,14 +59,17 @@ public class GameRepository : IGameRepository
                                    {
                                        Id = c.Id,
                                        UserId = c.UserId,
+                                       UserImageURL = $"http://localhost:5007/Image/Download/{c.User.UserData.ProfileImageId}",
                                        UserName = c.User.UserData.Login,
                                        Content = c.Content,
                                        Date = c.Date,
                                        Rating = c.Rating,
                                        UserMark = userMark?.Mark
                                    };
-                               }).ToList()
-        }).ToList();
+                               }).OrderByDescending(c => c.Date)
+                                 .ToList()
+        }).OrderByDescending(r => r.Date)
+          .ToList();
 
         return result;
     }

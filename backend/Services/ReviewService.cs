@@ -29,9 +29,9 @@ public class ReviewService : IReviewService
         return reviews.Select(r => r.ToDTO()).ToList();
     }
 
-    public async Task<int> CreateAsync(CreateReviewDTO reviewDTO)
+    public async Task<int> CreateAsync(CreateReviewDTO reviewDTO, int userId)
     {
-        return await _reviewRepository.CreateAsync(reviewDTO.ToEntity());
+        return await _reviewRepository.CreateAsync(reviewDTO.ToEntity(userId));
     }
 
     public async Task<bool> UpdateAsync(int reviewId, UpdateReviewDTO reviewDTO)

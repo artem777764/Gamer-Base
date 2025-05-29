@@ -10,7 +10,7 @@ defineProps<{
 </script>
 
 <template>
-<nav class="bg-secondary px-4 py-2 font-russo text-white text-xl text-shadow flex justify-between shadow-md">
+<nav class="bg-secondary px-7 py-2 font-russo text-white text-xl text-shadow flex justify-between shadow-md">
     <router-link v-for="item in menuItems" :key="item.label" :to="item.route">{{ item.label }}</router-link>
 </nav>
 </template>

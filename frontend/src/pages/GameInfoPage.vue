@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import axios from 'axios'
-import GameCard from '@/components/GameCard.vue';
+import Card from '@/components/Card.vue';
 import { useRoute } from 'vue-router';
 import TextBlock from '@/components/TextBlock.vue';
 
@@ -18,6 +18,7 @@ interface Game {
   ImageURL: string
   Platforms: [string]
   ReleaseDate: Date
+  Rating: number | null
 }
 
 const game = ref<Game>()
@@ -41,7 +42,13 @@ onMounted(() => {
         <p class="font-russo leading-none text-shadow text-white text-5xl text-justify">{{game?.Name}}</p>
         <div class="flex flex-row gap-5 mt-5">
             <div v-if="game" class="w-1/4 flex-shrink-0">
-                <GameCard :image-src="game.ImageURL"/>
+                <div>
+                    <Card :image-src="game.ImageURL"/>
+                </div>
+                <router-link v-if="game.Rating" :to="{ name: 'GameReview' }">
+                    <p class="font-russo leading-none text-shadow text-white text-3xl underline mt-1 text-center">{{game.Rating.toFixed(2)}}/5.00</p>
+                </router-link>
+                <p v-else class="font-russo leading-none text-shadow text-gray-400 text-3xl underline mt-1 text-center">Отзывов нет</p>
             </div>
             <TextBlock>
                 <p class="font-russo leading-none text-shadow text-white text-3xl text-justify">{{ game?.Description }}</p>

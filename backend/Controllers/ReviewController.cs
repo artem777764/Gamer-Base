@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using backend.DTOs.ReviewDTOs;
 using backend.DTOs.UserDTOs;
 using backend.Interfaces.IServices;
@@ -35,7 +36,9 @@ public class ReviewController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateReviewDTO dto)
     {
-        return Ok(await _reviewService.CreateAsync(dto));
+        Claim? userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null) return Unauthorized();
+        return Ok(await _reviewService.CreateAsync(dto, int.Parse(userIdClaim.Value)));
     }
 
     [Authorize]
