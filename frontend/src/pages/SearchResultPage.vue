@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import axios from 'axios'
-import MyInput from '@/components/ui/MyInput.vue';
 import Card from '@/components/Card.vue';
+import MySearch from '@/components/MySearch.vue';
+import { useRoute } from 'vue-router';
 
-const name = ref('')
+const route = useRoute()
+const name = ref(route.params.query as string)
 
 interface Game {
   Id: number
@@ -50,9 +52,7 @@ onMounted(() => {
 
 <template>
     <div class="min-h-screen bg-background">
-        <div class="px-5 pt-5">
-            <MyInput v-model="name" background-color="bg-secondary" font-size="text-5xl" placeholder="Поиск..." class="w-full"></MyInput>
-        </div>
+        <MySearch v-model="name" font-size="text-5xl" placeholder="Поиск..."/>
         <div class="grid grid-cols-4 gap-x-5 px-5 pt-5">
             <div v-for="game in games"
                 :key="game.Id"
@@ -67,7 +67,9 @@ onMounted(() => {
                     </router-link>
                 </div>
                 <div v-else>
-                    <p class="font-russo leading-none text-shadow text-gray-400 text-3xl underline mt-1 text-center">Нет отзывов</p>
+                    <router-link :to="{ name: 'GameReview', params: { id: game.Id } }">
+                        <p class="font-russo leading-none text-shadow text-gray-400 text-3xl underline mt-1 text-center">Нет отзывов</p>
+                    </router-link>
                 </div>
             </div>
         </div>

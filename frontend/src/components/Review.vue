@@ -42,7 +42,7 @@ function handleCommentCreated(commentId: number) {
             <p class="font-russo leading-none text-shadow text-xl text-white text-justify">{{ review.Title }}</p>
             <p class="font-russo leading-none text-shadow text-base text-white text-justify">{{ review.Content }}</p>
         </div>
-        <p @click="handleComments" class="font-russo leading-none text-shadow text-base text-white hover:cursor-pointer text-right">Комментарии</p>
+        <p @click="handleComments" class="font-russo leading-none text-shadow text-base text-white hover:cursor-pointer underline text-right">Комментарии</p>
         <div v-if="commentsIsOpen" class="flex flex-col">
             <CommentWriter @comment-created="handleCommentCreated" :review-id="review.ReviewId"/>
             <div class="bg-background mt-5 flex flex-col divide-y divide-primary">

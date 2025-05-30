@@ -16,13 +16,13 @@ const roleName = computed(() => {
 const menuItems = {
   guest: [
     { label: 'GamerBase', route: '/' },
-    { label: 'Поиск', route: '/search-result' },
+    { label: 'Поиск', route: '/search' },
     { label: 'Регистрация', route: '/register' },
     { label: 'Вход', route: '/login' },
   ],
   user: [
     { label: 'GamerBase', route: '/' },
-    { label: 'Поиск', route: '/search-result' },
+    { label: 'Поиск', route: '/search' },
     { label: 'Избранное', route: '/' },
     { label: 'Мои обзоры', route: '/' },
     { label: 'Профиль', route: '/' },
