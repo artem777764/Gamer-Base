@@ -34,6 +34,15 @@ async function fetchGameReviews(id: string)
     }
 }
 
+async function handleReviewCreated() {
+    await fetchGameInfo(id)
+    await fetchGameReviews(id)
+}
+
+async function handleCommentCreated() {
+    await fetchGameReviews(id)
+}
+
 onMounted(() => {
     fetchGameInfo(id)
     fetchGameReviews(id)
@@ -48,14 +57,18 @@ onMounted(() => {
                 <div>
                     <Card :image-src="game.ImageURL"/>
                 </div>
-                <router-link v-if="game.Rating" :to="{ name: 'GameInfo' }">
-                    <p class="font-russo leading-none text-shadow text-white text-3xl underline mt-1 text-center">Информация</p>
-                </router-link>
+                <div>
+                    <p v-if="game.Rating" class="font-russo leading-none text-shadow text-white text-3xl mt-1 text-center">{{ game.Rating?.toFixed(2) }}/5.00</p>
+                    <p v-else class="font-russo leading-none text-shadow text-white text-3xl mt-1 text-center">Отзывов нет</p>
+                    <router-link :to="{ name: 'GameInfo' }">
+                        <p class="font-russo leading-none text-shadow text-white text-3xl underline mt-1 text-center">Информация</p>
+                    </router-link>
+                </div>
             </div>
-            <div class="flex flex-col gap-5">
-                <ReviewWriter :game-id="idNumber"/>
+            <div class="flex flex-col gap-5 w-full">
+                <ReviewWriter @review-created="handleReviewCreated" :game-id="idNumber"/>
                 <div class="w-full flex flex-col gap-5">
-                    <Review v-for="review in reviews" :key="review.ReviewId" :review="review"></Review>
+                    <Review @comment-created="handleCommentCreated" v-for="review in reviews" :key="review.ReviewId" :review="review"></Review>
                 </div>
             </div>
         </div>

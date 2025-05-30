@@ -45,10 +45,20 @@ onMounted(() => {
                 <div>
                     <Card :image-src="game.ImageURL"/>
                 </div>
-                <router-link v-if="game.Rating" :to="{ name: 'GameReview' }">
-                    <p class="font-russo leading-none text-shadow text-white text-3xl underline mt-1 text-center">{{game.Rating.toFixed(2)}}/5.00</p>
-                </router-link>
-                <p v-else class="font-russo leading-none text-shadow text-gray-400 text-3xl underline mt-1 text-center">Отзывов нет</p>
+                <div>
+                    <div v-if="game.Rating">
+                        <p class="font-russo leading-none text-shadow text-white text-3xl mt-1 text-center">{{game.Rating.toFixed(2)}}/5.00</p>
+                        <router-link  :to="{ name: 'GameReview' }">
+                            <p class="font-russo leading-none text-shadow text-white text-3xl mt-1 underline text-center">Отзывы</p>
+                        </router-link>
+                    </div>
+                    <div v-else>
+                        <p class="font-russo leading-none text-shadow text-white text-3xl mt-1 text-center">Отзывов нет</p>
+                        <router-link  :to="{ name: 'GameReview' }">
+                            <p class="font-russo leading-none text-shadow text-white text-3xl mt-1 underline text-center">Написать</p>
+                        </router-link>
+                    </div>
+                </div>
             </div>
             <TextBlock>
                 <p class="font-russo leading-none text-shadow text-white text-3xl text-justify">{{ game?.Description }}</p>

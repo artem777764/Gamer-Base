@@ -8,6 +8,10 @@ const props = defineProps<{
     gameId: number,
 }>()
 
+const emit = defineEmits<{
+  (e: 'review-created', reviewId: number): void
+}>();
+
 const isOpen = ref(false)
 const mark = ref()
 const title = ref()
@@ -17,7 +21,7 @@ const messageColor = ref('text-red-500')
 
 async function SendReview () {
     try {
-        await axios.post('http://localhost:5007/Review', {
+        const response = await axios.post('http://localhost:5007/Review', {
             GameId: props.gameId,
             Mark: mark.value,
             Title: title.value,
@@ -29,9 +33,18 @@ async function SendReview () {
         message.value = 'Отзыв отправлен!'
         messageColor.value = 'text-green-500'
 
+        emit('review-created', response.data.Id);
+
         setTimeout(() => {
             isOpen.value = !isOpen.value
+            
+            mark.value = ''
+            title.value = ''
+            content.value = ''
+            message.value = ''
+            messageColor.value = 'text-red-500'
         }, 1500)
+
     } catch (error) {
         message.value = 'Что-то пошло не так'
     }
@@ -61,7 +74,7 @@ async function handleSubmit() {
 </script>
 
 <template>
-    <div class="flex flex-col gap-3 p-5 bg-secondary rounded shadow-md ">
+    <div class="flex flex-col gap-3 p-5 bg-secondary rounded shadow-md">
         <p @click="handleWriter" class="font-russo leading-none text-shadow text-white text-3xl">Написать обзор</p>
         <div v-if="isOpen" class="flex flex-col gap-3">
             <Transition
@@ -71,7 +84,7 @@ async function handleSubmit() {
                 leave-active-class="transition-all duration-500 ease-in-out"
                 leave-from-class="opacity-100 max-h-40"
                 leave-to-class="opacity-0 max-h-0"
-                >
+            >
                 <p
                     v-if="message"
                     :class="['overflow-hidden font-russo leading-none text-xl text-center', messageColor]"

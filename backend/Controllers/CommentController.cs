@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using backend.DTOs.CommentDTOs;
 using backend.Interfaces.IServices;
 using Microsoft.AspNetCore.Authorization;
@@ -34,7 +35,10 @@ public class CommentController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateCommentDTO dto)
     {
-        return Ok(await _commentService.CreateAsync(dto));
+        Claim? userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null) return Unauthorized();
+        int commentId = await _commentService.CreateAsync(dto, int.Parse(userIdClaim.Value));
+        return Ok(new IdDTO(commentId));
     }
 
     [Authorize]

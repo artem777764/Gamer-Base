@@ -62,7 +62,8 @@ public class GameService : IGameService
 
     public double? CalculateRating(GameEntity game)
     {
-        if (game.Reviews == null || game.Reviews.Count == 0) return null;
-        return game.Reviews.Sum(r => r.Mark) / (double)game.Reviews.Count;
+        List<ReviewEntity> uniqueReviews = game.Reviews.OrderByDescending(r => r.Date).DistinctBy(r => r.AuthorId).ToList();
+        if (uniqueReviews == null || uniqueReviews.Count == 0) return null;
+        return uniqueReviews.Sum(r => r.Mark) / (double)uniqueReviews.Count;
     }
 }

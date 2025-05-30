@@ -7,6 +7,13 @@ interface CardProps {
 const props = withDefaults(defineProps<CardProps>(), {
   aspect: 'aspect-[2/3]',
 })
+
+const fallbackImage = '/images/default-avatar.png'
+
+function onImageError(event: Event) {
+  const target = event.target as HTMLImageElement
+  target.src = fallbackImage
+}
 </script>
 
 <template>
@@ -15,6 +22,7 @@ const props = withDefaults(defineProps<CardProps>(), {
       :src="props.imageSrc"
       alt="Image"
       class="w-full h-full object-cover object-center"
+      @error="onImageError"
     />
   </div>
 </template>

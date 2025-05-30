@@ -38,7 +38,8 @@ public class ReviewController : ControllerBase
     {
         Claim? userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
         if (userIdClaim == null) return Unauthorized();
-        return Ok(await _reviewService.CreateAsync(dto, int.Parse(userIdClaim.Value)));
+        int reviewId = await _reviewService.CreateAsync(dto, int.Parse(userIdClaim.Value));
+        return Ok(new IdDTO(reviewId));
     }
 
     [Authorize]

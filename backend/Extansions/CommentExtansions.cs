@@ -18,11 +18,11 @@ public static class CommentExtansions
         };
     }
 
-    public static CommentEntity ToEntity(this CreateCommentDTO dto)
+    public static CommentEntity ToEntity(this CreateCommentDTO dto, int userId)
     {
         return new()
         {
-            UserId = dto.AuthorId,
+            UserId = userId,
             ReviewId = dto.ReviewId,
             Content = dto.Content,
             Date = DateTime.UtcNow,

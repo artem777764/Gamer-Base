@@ -14,7 +14,8 @@ defineProps<{
                 <Card :image-src="comment.UserImageURL" aspect='aspect-[1/1]' class="w-[54px]"/>
                 <div class="flex flex-col gap-2">
                     <p class="font-russo leading-none text-shadow text-lg, text-white">{{ comment.UserName }}</p>
-                    <p class="font-russo leading-none text-shadow text-base text-white">{{ comment.UserMark.toFixed(2) }}/5.00</p>
+                    <p v-if="comment.UserMark" class="font-russo leading-none text-shadow text-base text-white">{{ comment.UserMark.toFixed(2) }}/5.00</p>
+                    <p v-else class="font-russo leading-none text-shadow text-base text-white">Оценки нет</p>
                 </div>
             </div>
             <div>

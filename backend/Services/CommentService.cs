@@ -28,9 +28,9 @@ public class CommentService : ICommentService
         return comments.Select(c => c.ToDTO()).ToList();
     }
 
-    public async Task<int> CreateAsync(CreateCommentDTO commentDTO)
+    public async Task<int> CreateAsync(CreateCommentDTO commentDTO, int userId)
     {
-        return await _commentRepository.CreateAsync(commentDTO.ToEntity());
+        return await _commentRepository.CreateAsync(commentDTO.ToEntity(userId));
     }
 
     public async Task<bool> UpdateAsync(int commentId, UpdateCommentDTO commentDTO)
