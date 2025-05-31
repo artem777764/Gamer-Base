@@ -22,7 +22,7 @@ const baseRating = ref(props.rating)
 const userMark = ref(props.currentMark)
 
 const displayedRating = computed(() => {
-  const total = baseRating.value + userMark.value
+  const total = baseRating.value
   return total > 0 ? `+${total}` : String(total)
 })
 
@@ -30,9 +30,12 @@ function upVote() {
     isMinus.value = false
   if (userMark.value === 1) {
     userMark.value = 0
+    baseRating.value -= 1
     isPlus.value = false
     emit('vote', { type: props.type, id: props.id, value: 0 })
   } else {
+    if (userMark.value === 0) baseRating.value += 1
+    else baseRating.value += 2
     userMark.value = 1
     isPlus.value = true
     emit('vote', { type: props.type, id: props.id, value: 1 })
@@ -43,9 +46,12 @@ function downVote() {
     isPlus.value = false
   if (userMark.value === -1) {
     userMark.value = 0
+    baseRating.value += 1
     isMinus.value = false
     emit('vote', { type: props.type, id: props.id, value: 0 })
   } else {
+    if (userMark.value === 0) baseRating.value -= 1
+    else baseRating.value -= 2
     userMark.value = -1
     isMinus.value = true
     emit('vote', { type: props.type, id: props.id, value: -1 })

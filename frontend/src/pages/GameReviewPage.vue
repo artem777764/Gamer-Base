@@ -15,6 +15,7 @@ interface IVote {
 }
 
 const votes = ref<IVote[]>([])
+const votesSent = ref(false)
 
 const route = useRoute()
 const id = route.params.id as string
@@ -65,9 +66,35 @@ function handleVote(payload: { type: 'comment' | 'review', id: number, value: nu
 onMounted(() => {
     fetchGameInfo(id)
     fetchGameReviews(id)
+
+    window.addEventListener('beforeunload', handleUnload)
 })
 
 onBeforeUnmount(() => {
+    window.removeEventListener('beforeunload', handleUnload)
+    if (!votesSent.value) {
+        sendVotes()
+        votesSent.value = true
+    }
+})
+
+function handleUnload(event: BeforeUnloadEvent) {
+    if (votes.value.length === 0 || votesSent.value) return;
+
+    const mappedVotes = votes.value.map(v => ({
+        entityId: v.id,
+        type: v.type,
+        mark: v.value,
+    }));
+
+    const blob = new Blob([JSON.stringify(mappedVotes)], { type: 'application/json' });
+
+    navigator.sendBeacon("http://localhost:5007/Vote", blob);
+}
+
+async function sendVotes() {
+    if (votes.value.length === 0) return;
+
     const mappedVotes = votes.value.map(v => ({
         entityId: v.id,
         type: v.type,
@@ -78,7 +105,7 @@ onBeforeUnmount(() => {
             withCredentials: true
         }
     )
-})
+}
 </script>
 
 <template>
