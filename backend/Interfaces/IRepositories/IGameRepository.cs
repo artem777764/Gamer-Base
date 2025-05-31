@@ -5,7 +5,7 @@ namespace backend.Interfaces.IRepositories;
 
 public interface IGameRepository
 {
-    Task<List<GetReviewWithComments>?> GetByGameAsync(int gameId);
+    Task<List<GetReviewWithComments>?> GetByGameAsync(int gameId, int? userId = null);
     Task<GameEntity?> GetByIdAsync(int gameId);
     Task<int> CreateAsync(GameEntity game);
     Task AddPlatforms(List<GamePlatformsEntity> entities);

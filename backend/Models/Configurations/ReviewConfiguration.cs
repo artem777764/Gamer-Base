@@ -13,7 +13,8 @@ class ReviewConfiguration : IEntityTypeConfiguration<ReviewEntity>
 
        builder.HasMany(r => r.Comments)
               .WithOne(c => c.Review)
-              .HasForeignKey(c => c.ReviewId);
+              .HasForeignKey(c => c.ReviewId)
+              .OnDelete(DeleteBehavior.Cascade);
        
        builder.HasOne(r => r.Game)
               .WithMany(g => g.Reviews)
@@ -21,7 +22,8 @@ class ReviewConfiguration : IEntityTypeConfiguration<ReviewEntity>
        
        builder.HasMany(r => r.VotesReview)
               .WithOne(vr => vr.Review)
-              .HasForeignKey(vr => vr.ReviewId);
+              .HasForeignKey(vr => vr.ReviewId)
+              .OnDelete(DeleteBehavior.Cascade);
        
        builder.HasOne(r => r.User)
               .WithMany(u => u.Reviews)

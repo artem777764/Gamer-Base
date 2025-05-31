@@ -5,5 +5,6 @@ export interface IComment {
     Content: string
     Date: Date
     Rating: number
+    UserRatingMark: number
     UserMark: number
 }

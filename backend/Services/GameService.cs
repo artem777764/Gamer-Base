@@ -17,9 +17,9 @@ public class GameService : IGameService
         _gameRepository = gameRepository;
         _imageService = imageService;
     }
-    public async Task<List<GetReviewWithComments>?> GetActivityByGameAsync(int gameId)
+    public async Task<List<GetReviewWithComments>?> GetActivityByGameAsync(int gameId, int? userId = null)
     {
-        return await _gameRepository.GetByGameAsync(gameId);
+        return await _gameRepository.GetByGameAsync(gameId, userId);
     }
 
     public async Task<GetGameDTO?> GetByIdAsync(int gameId)

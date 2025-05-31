@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Threading.Tasks;
 using backend.DTOs.CommentDTOs;
 using backend.DTOs.GameDTOs;
@@ -22,7 +23,9 @@ public class GameController : ControllerBase
     [HttpGet("Activity/{gameId}")]
     public async Task<IActionResult> GetReviewWithComments([FromRoute] int gameId)
     {
-        return Ok(await _gameService.GetActivityByGameAsync(gameId));
+        Claim? userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+        if (userIdClaim == null) return Ok(await _gameService.GetActivityByGameAsync(gameId));
+        return Ok(await _gameService.GetActivityByGameAsync(gameId, int.Parse(userIdClaim.Value)));
     }
 
     [HttpGet("{gameId}")]

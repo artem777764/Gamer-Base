@@ -9,5 +9,6 @@ export interface IReview {
     Content: string
     Date: Date
     Rating: number
+    UserRatingMark: number
     Comments: IComment[]
 }

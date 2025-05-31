@@ -12,7 +12,8 @@ class CommentConfiguration : IEntityTypeConfiguration<CommentEntity>
 
         builder.HasMany(c => c.VotesComment)
                .WithOne(vc => vc.Comment)
-               .HasForeignKey(vc => vc.CommentId);
+               .HasForeignKey(vc => vc.CommentId)
+               .OnDelete(DeleteBehavior.Cascade);
         
         builder.HasOne(c => c.User)
                .WithMany(u => u.Comments)

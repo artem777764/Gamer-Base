@@ -15,13 +15,14 @@ public class GameRepository : IGameRepository
         _postgresDb = postgresDb;
     }
 
-    public async Task<List<GetReviewWithComments>?> GetByGameAsync(int gameId)
+    public async Task<List<GetReviewWithComments>?> GetByGameAsync(int gameId, int? userId = null)
     {
         bool gameExists = await _postgresDb.Games.AnyAsync(g => g.Id == gameId);
         if (!gameExists) return null;
 
         List<ReviewEntity> reviews = await _postgresDb.Reviews.Include(r => r.User)
                                                               .ThenInclude(u => u.UserData)
+                                                              .Include(r => r.VotesReview)
                                                               .Where(r => r.GameId == gameId)
                                                               .ToListAsync();
 
@@ -35,6 +36,7 @@ public class GameRepository : IGameRepository
         List<CommentEntity> comments = await _postgresDb.Comments.Where(c => reviewIds.Contains(c.ReviewId))
                                                                  .Include(c => c.User)
                                                                  .ThenInclude(u => u.UserData)
+                                                                 .Include(c => c.VotesComment)
                                                                  .ToListAsync();
 
         List<ReviewEntity> userMarks = await _postgresDb.Reviews.Where(r => r.GameId == gameId && userIds.Contains(r.AuthorId))
@@ -50,7 +52,10 @@ public class GameRepository : IGameRepository
             Title = r.Title,
             Content = r.Content,
             Date = r.Date,
-            Rating = r.Rating,
+            Rating = r.VotesReview.Sum(v => v.Vote),
+            UserRatingMark = userId == null 
+                ? 0
+                : r.VotesReview.FirstOrDefault(v => v.UserId == userId)?.Vote ?? 0,
             Comments = comments.Where(c => c.ReviewId == r.Id)
                                .Select(c =>
                                {
@@ -63,8 +68,11 @@ public class GameRepository : IGameRepository
                                        UserName = c.User.UserData.Login,
                                        Content = c.Content,
                                        Date = c.Date,
-                                       Rating = c.Rating,
-                                       UserMark = userMark?.Mark
+                                       Rating = c.VotesComment.Sum(v => v.Vote),
+                                       UserMark = userMark?.Mark,
+                                       UserRatingMark = userId == null 
+                                            ? 0 
+                                            : c.VotesComment.FirstOrDefault(v => v.UserId == userId)?.Vote ?? 0,
                                    };
                                }).OrderByDescending(c => c.Date)
                                  .ToList()

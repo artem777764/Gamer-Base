@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 import axios from 'axios'
 import { useRoute } from 'vue-router';
 import Review from '@/components/Review.vue';
@@ -7,6 +7,14 @@ import type { IGame } from '@/types/game';
 import type { IReview } from '@/types/review';
 import Card from '@/components/Card.vue';
 import ReviewWriter from '@/components/ReviewWriter.vue';
+
+interface IVote {
+    id: number,
+    type: 'comment' | 'review',
+    value: number,
+}
+
+const votes = ref<IVote[]>([])
 
 const route = useRoute()
 const id = route.params.id as string
@@ -27,7 +35,9 @@ const reviews = ref<IReview[]>([])
 async function fetchGameReviews(id: string)
 {
     try {
-        const response = await axios.get(`http://localhost:5007/Games/Activity/${id}`)
+        const response = await axios.get(`http://localhost:5007/Games/Activity/${id}`, {
+            withCredentials: true,
+        })
         reviews.value = response.data
     } catch (error) {
         console.error('Ошибка при загрузке отзывов:', error);
@@ -43,9 +53,31 @@ async function handleCommentCreated() {
     await fetchGameReviews(id)
 }
 
+function handleVote(payload: { type: 'comment' | 'review', id: number, value: number }) {
+    const existing = votes.value.find(v => v.id === payload.id && v.type === payload.type)
+    if (existing) {
+        existing.value = payload.value
+    } else {
+        votes.value.push(payload)
+    }
+}
+
 onMounted(() => {
     fetchGameInfo(id)
     fetchGameReviews(id)
+})
+
+onBeforeUnmount(() => {
+    const mappedVotes = votes.value.map(v => ({
+        entityId: v.id,
+        type: v.type,
+        mark: v.value,
+    }));
+
+    axios.post("http://localhost:5007/Vote", mappedVotes, {
+            withCredentials: true
+        }
+    )
 })
 </script>
 
@@ -68,7 +100,7 @@ onMounted(() => {
             <div class="flex flex-col gap-5 w-full">
                 <ReviewWriter @review-created="handleReviewCreated" :game-id="idNumber"/>
                 <div class="w-full flex flex-col gap-5">
-                    <Review @comment-created="handleCommentCreated" v-for="review in reviews" :key="review.ReviewId" :review="review"></Review>
+                    <Review @comment-created="handleCommentCreated" @vote="handleVote" v-for="review in reviews" :key="review.ReviewId" :review="review"></Review>
                 </div>
             </div>
         </div>

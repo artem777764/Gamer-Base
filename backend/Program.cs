@@ -89,6 +89,7 @@ builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddScoped<IOurAuthorizationService, AuthorizationService>();
 builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<IVoteService, VoteService>();
 builder.Services.AddSingleton<ContentTypeService>();
 builder.Services.AddSingleton<IEncryptionService, EncryptionService>();
 builder.Services.AddSingleton<IJwtService, JwtService>();
@@ -99,6 +100,7 @@ builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
+builder.Services.AddScoped<IVoteRepository, VoteRepository>();
 
 var app = builder.Build();
 

@@ -11,5 +11,6 @@ public record GetReviewWithComments
     public required string Content { get; set; }
     public required DateTime Date { get; set; }
     public required int Rating { get; set; }
+    public required int UserRatingMark { get; set; }
     public List<GetCommentWithMarkDTO> Comments { get; set; } = new List<GetCommentWithMarkDTO>();
 }

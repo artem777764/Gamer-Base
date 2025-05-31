@@ -9,5 +9,6 @@ public record GetCommentWithMarkDTO
     public required string Content { get; set; }
     public required DateTime Date { get; set; }
     public required int Rating { get; set; }
+    public required int UserRatingMark { get; set; }
     public double? UserMark { get; set; }
 }

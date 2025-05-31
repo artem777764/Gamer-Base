@@ -28,7 +28,7 @@ const handleSubmit = async () => {
         userStore.setUser(response.data.UserId, response.data.RoleId)
 
         setTimeout(() => {
-            router.push('/search-result')
+            router.push('/')
         }, 1500)
     } catch (error: any) {
         message.value = error.response?.data?.Message || 'Что-то пошло не так'
