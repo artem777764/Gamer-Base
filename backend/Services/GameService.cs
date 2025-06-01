@@ -24,25 +24,12 @@ public class GameService : IGameService
 
     public async Task<GetGameDTO?> GetByIdAsync(int gameId)
     {
-        GameEntity? game = await _gameRepository.GetByIdAsync(gameId);
-        if (game == null) return null;
-
-        GetGameDTO gameDTO = game.ToDTO();
-        gameDTO.Rating = CalculateRating(game);
-        return gameDTO;
+        return await _gameRepository.GetByIdAsync(gameId);
     }
 
     public async Task<List<GetGameDTO>> GetGamesByFilterAsync(int page, int size, GetGamesByFilter filter)
     {
-        List<GameEntity> games = await _gameRepository.GetGamesByFilterAsync(page, size, filter);
-        List<GetGameDTO> gamesDTO = new List<GetGameDTO>();
-
-        return games.Select(game =>
-        {
-            GetGameDTO dto = game.ToDTO();
-            dto.Rating = CalculateRating(game);
-            return dto;
-        }).ToList();
+        return await _gameRepository.GetGamesByFilterAsync(page, size, filter);
     }
 
     public async Task<int?> CreateAsync(CreateGameDTO dto)
@@ -58,12 +45,5 @@ public class GameService : IGameService
         await _gameRepository.AddPlatforms(dto.ToEntityPlatforms(gameId));
         await _gameRepository.AddGenres(dto.ToEntityGenres(gameId));
         return gameId;
-    }
-
-    public double? CalculateRating(GameEntity game)
-    {
-        List<ReviewEntity> uniqueReviews = game.Reviews.OrderByDescending(r => r.Date).DistinctBy(r => r.AuthorId).ToList();
-        if (uniqueReviews == null || uniqueReviews.Count == 0) return null;
-        return uniqueReviews.Sum(r => r.Mark) / (double)uniqueReviews.Count;
     }
 }

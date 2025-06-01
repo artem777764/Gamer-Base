@@ -1,4 +1,5 @@
 using backend.DTOs.GameDTOs;
+using backend.Extansions;
 using backend.Interfaces.IRepositories;
 using backend.Models;
 using backend.Models.Entities;
@@ -53,7 +54,7 @@ public class GameRepository : IGameRepository
             Content = r.Content,
             Date = r.Date,
             Rating = r.VotesReview.Sum(v => v.Vote),
-            UserRatingMark = userId == null 
+            UserRatingMark = userId == null
                 ? 0
                 : r.VotesReview.FirstOrDefault(v => v.UserId == userId)?.Vote ?? 0,
             Comments = comments.Where(c => c.ReviewId == r.Id)
@@ -70,8 +71,8 @@ public class GameRepository : IGameRepository
                                        Date = c.Date,
                                        Rating = c.VotesComment.Sum(v => v.Vote),
                                        UserMark = userMark?.Mark,
-                                       UserRatingMark = userId == null 
-                                            ? 0 
+                                       UserRatingMark = userId == null
+                                            ? 0
                                             : c.VotesComment.FirstOrDefault(v => v.UserId == userId)?.Vote ?? 0,
                                    };
                                }).OrderByDescending(c => c.Date)
@@ -82,9 +83,9 @@ public class GameRepository : IGameRepository
         return result;
     }
 
-    public async Task<GameEntity?> GetByIdAsync(int gameId)
+    public async Task<GetGameDTO?> GetByIdAsync(int gameId)
     {
-        return await _postgresDb.Games.Include(g => g.GameGenres)
+        GameEntity? game = await _postgresDb.Games.Include(g => g.GameGenres)
                                 .ThenInclude(gg => gg.Genre)
                                 .Include(g => g.Developer)
                                 .Include(g => g.Publisher)
@@ -93,9 +94,15 @@ public class GameRepository : IGameRepository
                                 .Include(g => g.Reviews)
                                 .Where(g => g.Id == gameId)
                                 .FirstOrDefaultAsync();
+        
+        if (game == null) return null;
+
+        GetGameDTO dto = game.ToDTO();
+        dto.Rating = CalculateRating(game);
+        return dto;
     }
 
-    public async Task<List<GameEntity>> GetGamesByFilterAsync(int page, int size, GetGamesByFilter filter)
+    public async Task<List<GetGameDTO>> GetGamesByFilterAsync(int page, int size, GetGamesByFilter filter)
     {
         var query = _postgresDb.Games.Include(g => g.GameGenres)
                                      .ThenInclude(gg => gg.Genre)
@@ -131,8 +138,24 @@ public class GameRepository : IGameRepository
             query = query.Where(g => g.PublisherId == filter.PublisherId.Value);
         }
 
-        query = query.Skip((page - 1) * size).Take(size);
-        return await query.ToListAsync();
+        var projectedQuery = query
+            .Select(g => new
+            {
+                Game = g,
+                Rating = g.Reviews.Any() ? g.Reviews.Average(r => r.Mark) : 0
+            })
+            .OrderByDescending(x => x.Rating)
+            .Skip((page - 1) * size)
+            .Take(size);
+        
+        var result = await projectedQuery.ToListAsync();
+
+        return result.Select(x =>
+        {
+            GetGameDTO dto = x.Game.ToDTO();
+            dto.Rating = CalculateRating(x.Game);
+            return dto;
+        }).ToList();
     }
 
     public async Task<int> CreateAsync(GameEntity game)
@@ -152,5 +175,18 @@ public class GameRepository : IGameRepository
     {
         await _postgresDb.GameGenres.AddRangeAsync(genres);
         await _postgresDb.SaveChangesAsync();
+    }
+    
+    private double? CalculateRating(GameEntity game)
+    {
+        List<ReviewEntity> uniqueReviews = game.Reviews
+                                                .OrderByDescending(r => r.Date)
+                                                .DistinctBy(r => r.AuthorId)
+                                                .ToList();
+
+        if (uniqueReviews == null || uniqueReviews.Count == 0)
+            return null;
+
+        return uniqueReviews.Sum(r => r.Mark) / (double)uniqueReviews.Count;
     }
 }

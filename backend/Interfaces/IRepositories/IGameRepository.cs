@@ -6,9 +6,9 @@ namespace backend.Interfaces.IRepositories;
 public interface IGameRepository
 {
     Task<List<GetReviewWithComments>?> GetByGameAsync(int gameId, int? userId = null);
-    Task<GameEntity?> GetByIdAsync(int gameId);
+    Task<GetGameDTO?> GetByIdAsync(int gameId);
     Task<int> CreateAsync(GameEntity game);
     Task AddPlatforms(List<GamePlatformsEntity> entities);
     Task AddGenres(List<GameGenresEntity> genres);
-    Task<List<GameEntity>> GetGamesByFilterAsync(int page, int size, GetGamesByFilter filter);
+    Task<List<GetGameDTO>> GetGamesByFilterAsync(int page, int size, GetGamesByFilter filter);
 }
