@@ -6,6 +6,7 @@ const userStore = useUserStore()
 
 import { useRoute } from 'vue-router'
 const hideNavigation = ['/register', '/login']
+const fixNavigation = ['/', '/search'];
 const route = useRoute()
 
 const roleName = computed(() => {
@@ -33,7 +34,13 @@ const menuItems = {
 </script>
 
 <template>
-  <NavBar v-if="!hideNavigation.includes(route.path)" :menu-items="menuItems[roleName]"></NavBar>
+  <NavBar
+    v-if="!hideNavigation.includes(route.path)"
+    :menu-items="menuItems[roleName]"
+    :class="fixNavigation.includes(route.path)
+      ? 'fixed top-0 left-0 w-full z-50'
+      : ''"
+  />
   <router-view></router-view>
 </template>
 
