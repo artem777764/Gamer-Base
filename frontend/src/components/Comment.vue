@@ -18,7 +18,7 @@ function handleVote(payload: { type: 'comment' | 'review', id: number, value: nu
 
 <template>
     <div class="p-5 flex flex-col gap-3">
-        <div class="flex flex-row place-content-between">
+        <div class="flex flex-row justify-between items-start">
             <div class="flex flex-row gap-2 items-center">
                 <Card :image-src="comment.UserImageURL" aspect='aspect-[1/1]' class="w-[50px]"/>
                 <div class="flex flex-col gap-2">

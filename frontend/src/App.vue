@@ -6,7 +6,11 @@ const userStore = useUserStore()
 
 import { useRoute } from 'vue-router'
 const hideNavigation = ['/register', '/login']
-const fixNavigation = ['/', '/search'];
+const fixNavigation = computed(() => [
+  '/',
+  '/search',
+  `/profile/${userStore.id}`,
+]);
 const route = useRoute()
 
 const roleName = computed(() => {
@@ -14,22 +18,21 @@ const roleName = computed(() => {
   return 'guest'
 })
 
-const menuItems = {
+const menuItems = computed(() => ({
   guest: [
-    { label: 'GamerBase', route: '/' },
-    { label: 'Поиск', route: '/search' },
-    { label: 'Регистрация', route: '/register' },
-    { label: 'Вход', route: '/login' },
+    { label: 'GamerBase', route: { path: '/' } },
+    { label: 'Поиск', route: { path: '/search' } },
+    { label: 'Регистрация', route: { path: '/register' } },
+    { label: 'Вход', route: { path: '/login' } },
   ],
   user: [
-    { label: 'GamerBase', route: '/' },
-    { label: 'Поиск', route: '/search' },
-    { label: 'Избранное', route: '/' },
-    { label: 'Мои обзоры', route: '/' },
-    { label: 'Профиль', route: '/' },
+    { label: 'GamerBase', route: { path: '/' } },
+    { label: 'Поиск', route: { path: '/search' } },
+    { label: 'Избранное', route: { path: '/favorites' } },
+    { label: 'Мои обзоры', route: { path: '/my-reviews' } },
+    { label: 'Профиль', route: { name: 'ProfilePage', params: { id: userStore.id } } },
   ],
-}
-
+}))
 
 </script>
 

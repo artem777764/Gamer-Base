@@ -35,7 +35,7 @@ async function fetchGames(name: string){
         {
             params: {
                 page: 1,
-                size: 8
+                size: 4
             }
         });
         games.value = response.data;
@@ -53,7 +53,7 @@ onMounted(() => {
 <template>
     <div class="min-h-screen bg-background">
         <MySearch v-model="name" font-size="text-5xl" placeholder="Поиск..."/>
-        <div class="grid grid-cols-4 gap-x-5 px-5 pt-5">
+        <div class="grid grid-cols-2 gap-x-5 px-5 pt-5">
             <div v-for="game in games"
                 :key="game.Id"
                 :to="`/game-info/${game.Id}`"

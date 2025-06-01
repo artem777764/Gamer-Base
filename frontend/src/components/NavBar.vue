@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import type { RouteLocationRaw } from 'vue-router';
+
 interface MenuItem{
     label: string,
-    route: string,
+    route: RouteLocationRaw;
 }
 
 defineProps<{

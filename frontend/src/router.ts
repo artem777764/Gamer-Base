@@ -8,6 +8,7 @@ import GameInfoPage from '@/pages/GameInfoPage.vue'
 import GameReviewPage from '@/pages/GameReviewPage.vue'
 import MainPage from '@/pages/MainPage.vue'
 import SearchPage from '@/pages/SearchPage.vue'
+import ProfilePage from '@/pages/ProfilePage.vue'
 
 const routes: RouteRecordRaw[] = [
   { path: '/', component: MainPage, name: 'Main' },
@@ -16,7 +17,8 @@ const routes: RouteRecordRaw[] = [
   { path: '/search-result/name/:query', component: SearchResultPage, name: 'SearchResult' },
   { path: '/game-info/:id', component: GameInfoPage, name: 'GameInfo' },
   { path: '/game-review/:id', component: GameReviewPage, name: 'GameReview' },
-  { path: '/search', component: SearchPage, name: 'Search' }
+  { path: '/search', component: SearchPage, name: 'Search' },
+  { path: '/profile/:id', component: ProfilePage, name: 'ProfilePage' },
 ]
 
 const router = createRouter({

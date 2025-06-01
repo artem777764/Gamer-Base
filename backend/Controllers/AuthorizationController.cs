@@ -57,4 +57,12 @@ public class AuthorizationController : ControllerBase
         if (!isSuccessful) return NotFound();
         return Ok();
     }
+
+    [HttpGet("GetUserInfo")]
+    public async Task<IActionResult> GetUserInfo(int userId)
+    {
+        GetUserDTO? dto = await _authorizationService.GetUserInfo(userId);
+        if (dto == null) return NotFound();
+        return Ok(dto);
+    }
 }

@@ -1,11 +1,9 @@
-using System.Threading.Tasks;
 using backend.DTOs.AuthorizationDTOs;
 using backend.DTOs.UserDTOs;
 using backend.Extansions;
 using backend.Interfaces.IRepositories;
 using backend.Interfaces.IServices;
 using backend.Models.Entities;
-using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 
 namespace backend.Services;
@@ -66,5 +64,12 @@ public class AuthorizationService : IOurAuthorizationService
         using Stream stream = file.OpenReadStream();
         ObjectId photoId = await _imageRepository.UploadAsync(stream, file.FileName);
         return await _userRepository.UpdateProfilePhotoId(userId, photoId);
+    }
+
+    public async Task<GetUserDTO?> GetUserInfo(int userId)
+    {
+        UserEntity? user = await _userRepository.GetByIdAsync(userId);
+        if (user == null) return null;
+        return user.ToDTO();
     }
 }

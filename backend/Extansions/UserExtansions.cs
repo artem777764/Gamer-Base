@@ -19,4 +19,15 @@ public static class UserExtansions
             }
         };
     }
+
+    public static GetUserDTO ToDTO(this UserEntity user)
+    {
+        return new()
+        {
+            Id = user.Id,
+            Email = user.Email,
+            Login = user.UserData.Login,
+            UserImageURL = $"http://localhost:5007/Image/Download/{user.UserData.ProfileImageId}",
+        };
+    }
 }
