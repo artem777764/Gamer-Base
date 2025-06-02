@@ -90,6 +90,10 @@ builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddScoped<IOurAuthorizationService, AuthorizationService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IVoteService, VoteService>();
+builder.Services.AddScoped<IGenreService, GenreService>();
+builder.Services.AddScoped<IPlatformService, PlatformService>();
+builder.Services.AddScoped<IPublisherService, PublisherService>();
+builder.Services.AddScoped<IDeveloperService, DeveloperService>();
 builder.Services.AddSingleton<ContentTypeService>();
 builder.Services.AddSingleton<IEncryptionService, EncryptionService>();
 builder.Services.AddSingleton<IJwtService, JwtService>();
@@ -101,6 +105,10 @@ builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IImageRepository, ImageRepository>();
 builder.Services.AddScoped<IVoteRepository, VoteRepository>();
+builder.Services.AddScoped<IGenreRepository, GenreRepository>();
+builder.Services.AddScoped<IPlatformRepository, PlatformRepository>();
+builder.Services.AddScoped<IPublisherRepository, PublisherRepository>();
+builder.Services.AddScoped<IDeveloperRepository, DeveloperRepository>();
 
 var app = builder.Build();
 
