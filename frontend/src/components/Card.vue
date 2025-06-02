@@ -1,11 +1,13 @@
 <script setup lang="ts">
 interface CardProps {
   imageSrc: string,
-  aspect?: string
+  aspect?: string,
+  width?: string,
 }
 
 const props = withDefaults(defineProps<CardProps>(), {
   aspect: 'aspect-[2/3]',
+  width: 'w-full'
 })
 
 const fallbackImage = '/images/default-avatar.png'
@@ -17,7 +19,7 @@ function onImageError(event: Event) {
 </script>
 
 <template>
-  <div :class="['w-full overflow-hidden rounded shadow-md', props.aspect]">
+  <div :class="['overflow-hidden rounded shadow-md', aspect, width]">
     <img
       :src="props.imageSrc"
       alt="Image"

@@ -14,7 +14,7 @@ const routes: RouteRecordRaw[] = [
   { path: '/', component: MainPage, name: 'Main' },
   { path: '/register', component: RegisterPage },
   { path: '/login', component: LoginPage },
-  { path: '/search-result/name/:query', component: SearchResultPage, name: 'SearchResult' },
+  { path: '/search-result', component: SearchResultPage, name: 'SearchResult' },
   { path: '/game-info/:id', component: GameInfoPage, name: 'GameInfo' },
   { path: '/game-review/:id', component: GameReviewPage, name: 'GameReview' },
   { path: '/search', component: SearchPage, name: 'Search' },

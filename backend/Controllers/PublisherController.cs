@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace backend.Controllers;
 
 [ApiController]
-[Route("Publisher")]
+[Route("Publishers")]
 public class PublisherController : ControllerBase
 {
     private readonly IPublisherService _publisherController;

@@ -77,13 +77,14 @@ onMounted(() => {
     <div class="flex justify-center mt-[100px]">
       <div class="bg-background p-1 rounded">
         <div class="relative">
-          <Card :image-src="user?.UserImageURL ?? ''" aspect="aspect-[1/1]" class="w-[300px] shadow-md"/>
+          <Card :image-src="user?.UserImageURL ?? ''" aspect="aspect-[1/1]" width="w-[300px]" class="shadow-md"/>
           <div class="absolute bottom-1 right-1">
             <Card
               @click="triggerFileInput"
               image-src="/images/icons/pensil.png"
               aspect="aspect-[1/1]"
-              class="bg-primary p-1 w-[40px] transition duration-150 filter hover:brightness-110 active:brightness-125 cursor-pointer"
+              width="w-[40px]"
+              class="bg-primary p-1 transition duration-150 filter hover:brightness-110 active:brightness-125 cursor-pointer"
             />
             <input
               ref="fileInputRef"
@@ -98,7 +99,8 @@ onMounted(() => {
               @click="exit"
               image-src="/images/icons/exit.png"
               aspect="aspect-[1/1]"
-              class="bg-primary p-1 w-[40px] transition duration-150 filter hover:brightness-110 active:brightness-125 cursor-pointer"
+              width="w-[40px]"
+              class="bg-primary p-1 transition duration-150 filter hover:brightness-110 active:brightness-125 cursor-pointer"
             />
           </div>
         </div>

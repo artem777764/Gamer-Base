@@ -4,9 +4,22 @@ import axios from 'axios'
 import Card from '@/components/Card.vue';
 import MySearch from '@/components/MySearch.vue';
 import { useRoute } from 'vue-router';
+import type { IFilterItem } from '@/types/filter';
 
 const route = useRoute()
-const name = ref(route.params.query as string)
+const name = ref((route.query.query as string) || '')
+const selectedGenreId = ref<number | null>(
+  route.query.genreId ? Number(route.query.genreId) : null
+)
+const selectedPlatformId = ref<number | null>(
+  route.query.platformId ? Number(route.query.platformId) : null
+)
+const selectedDeveloperId= ref<number | null>(
+  route.query.developerId? Number(route.query.developerId): null
+)
+const selectedPublisherId= ref<number | null>(
+  route.query.publisherId? Number(route.query.publisherId): null
+)
 
 interface Game {
   Id: number
@@ -15,15 +28,20 @@ interface Game {
 }
 
 const games = ref<Game[]>([])
+const genres = ref<IFilterItem[]>([])
+const platforms = ref<IFilterItem[]>([])
+const developers = ref<IFilterItem[]>([])
+const publishers = ref<IFilterItem[]>([])
 
 let debounceTimeout: number | undefined
-watch(name, (newName: string) => {
+watch([name, selectedGenreId, selectedPlatformId, selectedDeveloperId, selectedPublisherId],
+ ([newName, newGenreId, newPlatformId, newDeveloperId, newPublisherId]) => {
     clearTimeout(debounceTimeout);
 
     debounceTimeout = window.setTimeout(() => {
         page.value = 1;
         allLoaded.value = false;
-        fetchGames(newName);
+        fetchGames(newName, newGenreId, newPlatformId, newDeveloperId, newPublisherId);
     }, 200);
 });
 
@@ -33,7 +51,14 @@ const isLoading = ref(false)
 const allLoaded = ref(false)
 const observerRef = ref<HTMLElement | null>(null)
 
-async function fetchGames(name: string, append = false){
+async function fetchGames(
+    name: string,
+    genreId: number | null,
+    platformId: number | null,
+    developerId: number | null,
+    publisherId: number | null,
+    append = false
+) {
     if (isLoading.value || allLoaded.value) return;
 
     isLoading.value = true;
@@ -42,7 +67,11 @@ async function fetchGames(name: string, append = false){
         const response = await axios.post(
         'http://localhost:5007/Games/Search',
         {
-            Name: name
+            Name: name,
+            PlatformId: platformId,
+            GenreId: genreId,
+            DeveloperId: developerId,
+            PublisherId: publisherId,
         },
         {
             params: {
@@ -67,13 +96,53 @@ async function fetchGames(name: string, append = false){
     }
 }
 
+async function fetchGenres() {
+    try {
+        genres.value = (await axios.get('http://localhost:5007/Genres', {
+            withCredentials: true,
+        })).data
+    } catch (error) {
+        console.log('Ошибка загрузки жанров');
+    }
+}
+
+async function fetchPlatforms() {
+    try {
+        platforms.value = (await axios.get('http://localhost:5007/Platforms', {
+            withCredentials: true,
+        })).data
+    } catch (error) {
+        console.log('Ошибка загрузки платформ');
+    }   
+}
+
+async function fetchDevelopers() {
+    try {
+        developers.value = (await axios.get('http://localhost:5007/Developers', {
+            withCredentials: true,
+        })).data
+    } catch (error) {
+        console.log('Ошибка загрузки разработчиков');
+    }
+}
+
+async function fetchPublishers() {
+    try {
+        publishers.value = (await axios.get('http://localhost:5007/Publishers', {
+            withCredentials: true,
+        })).data
+    } catch (error) {
+        console.log('Ошибка загрузки издателей');
+    }
+}
+
 function createObserver() {
     const observer = new IntersectionObserver((entries) => {
         const entry = entries[0];
 
         if (entry.isIntersecting && !isLoading.value && !allLoaded.value) {
             page.value++;
-            fetchGames(name.value, true);
+            fetchGames(name.value, selectedGenreId.value, selectedPlatformId.value, selectedDeveloperId.value, selectedPublisherId.value, true);
         }
     }, {
         root: null,
@@ -86,7 +155,11 @@ function createObserver() {
 }
 
 onMounted(() => {
-  fetchGames(name.value)
+  fetchGames(name.value, selectedGenreId.value, selectedPlatformId.value, selectedDeveloperId.value, selectedPublisherId.value)
+  fetchGenres()
+  fetchPlatforms()
+  fetchDevelopers()
+  fetchPublishers()
   createObserver()
 })
 
@@ -94,7 +167,18 @@ onMounted(() => {
 
 <template>
     <div class="min-h-screen bg-background">
-        <MySearch v-model="name" font-size="text-5xl" placeholder="Поиск..."/>
+        <MySearch
+            v-model:model-value="name"
+            v-model:selected-genre-id="selectedGenreId"
+            v-model:selected-platform-id="selectedPlatformId"
+            v-model:selected-developer-id="selectedDeveloperId"
+            v-model:selected-publisher-id="selectedPublisherId"
+            font-size="text-5xl"
+            placeholder="Поиск..."
+            :genres="genres"
+            :platforms="platforms"
+            :developers="developers"
+            :publishers="publishers"/>
         <div class="grid grid-cols-4 gap-x-5 px-5 pt-5">
             <div v-for="game in games"
                 :key="game.Id"
