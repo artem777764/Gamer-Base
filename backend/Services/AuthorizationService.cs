@@ -72,4 +72,9 @@ public class AuthorizationService : IOurAuthorizationService
         if (user == null) return null;
         return user.ToDTO();
     }
+
+    public async Task<bool> RemoveUser(int userId)
+    {
+        return await _userRepository.DeleteAsync(userId);
+    }
 }

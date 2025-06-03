@@ -75,9 +75,9 @@ public class GameRepository : IGameRepository
                                             ? 0
                                             : c.VotesComment.FirstOrDefault(v => v.UserId == userId)?.Vote ?? 0,
                                    };
-                               }).OrderByDescending(c => c.Date)
+                               }).OrderByDescending(c => c.Rating).ThenByDescending(c => c.Date)
                                  .ToList()
-        }).OrderByDescending(r => r.Date)
+        }).OrderByDescending(r => r.Rating).ThenByDescending(r => r.Date)
           .ToList();
 
         return result;

@@ -184,18 +184,18 @@ onMounted(() => {
                 :key="game.Id"
                 :to="`/game-info/${game.Id}`"
                 class="mb-5 w-full block">
-                <router-link :to="`/game-info/${game.Id}`">
+                <a :href="`/game-info/${game.Id}`" target="_blank" rel="noopener">
                     <Card :image-src="game.ImageURL" class="w-full"/>
-                </router-link>
+                </a>
                 <div v-if="game.Rating">
-                    <router-link :to="{ name: 'GameReview', params: { id: game.Id } }">
+                    <a :href="`/game-review/${game.Id}`" target="_blank" rel="noopener">
                         <p class="font-russo leading-none text-shadow text-white text-3xl underline mt-1 text-center">{{game.Rating.toFixed(2)}}/5.00</p>
-                    </router-link>
+                    </a>
                 </div>
                 <div v-else>
-                    <router-link :to="{ name: 'GameReview', params: { id: game.Id } }">
+                    <a :href="`/game-review/${game.Id}`" target="_blank" rel="noopener">
                         <p class="font-russo leading-none text-shadow text-gray-400 text-3xl underline mt-1 text-center">Нет отзывов</p>
-                    </router-link>
+                    </a>
                 </div>
             </div>
         </div>

@@ -9,4 +9,5 @@ public interface IOurAuthorizationService
     Task<LoginResult> LoginAsync(LoginUserDTO dto);
     Task<bool> UpdateProfilePhotoAsync(IFormFile file, int userId);
     Task<GetUserDTO?> GetUserInfo(int userId);
+    Task<bool> RemoveUser(int userId);
 }

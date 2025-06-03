@@ -58,11 +58,19 @@ public class AuthorizationController : ControllerBase
         return Ok();
     }
 
-    [HttpGet("GetUserInfo")]
-    public async Task<IActionResult> GetUserInfo(int userId)
+    [HttpGet("GetUserInfo/{userId}")]
+    public async Task<IActionResult> GetUserInfo([FromRoute] int userId)
     {
         GetUserDTO? dto = await _authorizationService.GetUserInfo(userId);
         if (dto == null) return NotFound();
         return Ok(dto);
+    }
+
+    [HttpDelete("{userId}")]
+    public async Task<IActionResult> DeleteUser([FromRoute] int userId)
+    {
+        bool isSuccessful = await _authorizationService.RemoveUser(userId);
+        if (!isSuccessful) return NotFound();
+        return Ok();
     }
 }

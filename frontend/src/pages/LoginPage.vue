@@ -19,8 +19,6 @@ const handleSubmit = async () => {
             Password: password.value,
         }, { withCredentials: true })
         
-        // localStorage.setItem('jwtToken', response.data.JwtToken)
-
         message.value = 'Успешный вход!'
         messageColor.value = 'text-green-500'
 
