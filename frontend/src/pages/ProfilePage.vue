@@ -18,7 +18,7 @@ const fileInputRef = ref<HTMLInputElement | null>(null);
 
 async function getUser() {
   try {
-    const response = await axios.get('http://localhost:5007/Authorization/GetUserInfo',  {
+    const response = await axios.get(`http://localhost:5007/Authorization/GetUserInfo/${profileId}`,  {
       withCredentials: true,
       params: {
         userId: profileId,
