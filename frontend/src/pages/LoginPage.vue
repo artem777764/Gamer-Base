@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import MyForm from '@/components/MyForm.vue';
-import axios from 'axios';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
+import api from '@/lib/axios';
 
 const router = useRouter()
 
@@ -14,10 +14,10 @@ const messageColor = ref('text-red-500')
 
 const handleSubmit = async () => {
     try {
-        const response = await axios.post('http://localhost:5007/Authorization/Login', {
+        const response = await api.post('/Authorization/Login', {
             UserName: userName.value,
             Password: password.value,
-        }, { withCredentials: true })
+        })
         
         message.value = 'Успешный вход!'
         messageColor.value = 'text-green-500'

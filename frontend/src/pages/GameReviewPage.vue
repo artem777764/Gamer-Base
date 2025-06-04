@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue';
-import axios from 'axios'
 import { useRoute } from 'vue-router';
 import Review from '@/components/Review.vue';
 import type { IGame } from '@/types/game';
 import type { IReview } from '@/types/review';
 import Card from '@/components/Card.vue';
 import ReviewWriter from '@/components/ReviewWriter.vue';
+import api from '@/lib/axios';
 
 interface IVote {
     id: number,
@@ -25,7 +25,7 @@ const game = ref<IGame>()
 async function fetchGameInfo(id: string)
 {
     try {
-        const response = await axios.get(`http://localhost:5007/Games/${id}`)
+        const response = await api.get(`/Games/${id}`)
         game.value = response.data
     } catch (error) {
         console.error('Ошибка при загрузке игры:', error);
@@ -36,7 +36,7 @@ const reviews = ref<IReview[]>([])
 async function fetchGameReviews(id: string)
 {
     try {
-        const response = await axios.get(`http://localhost:5007/Games/Activity/${id}`, {
+        const response = await api.get(`/Games/Activity/${id}`, {
             withCredentials: true,
         })
         reviews.value = response.data
@@ -101,10 +101,7 @@ async function sendVotes() {
         mark: v.value,
     }));
 
-    axios.post("http://localhost:5007/Vote", mappedVotes, {
-            withCredentials: true
-        }
-    )
+    api.post("/Vote", mappedVotes)
 }
 </script>
 

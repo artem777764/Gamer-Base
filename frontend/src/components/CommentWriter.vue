@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import MyInput from '@/components/ui/MyInput.vue';
 import MyButton from '@/components/ui/MyButton.vue';
-import axios from 'axios';
+import api from '@/lib/axios';
 
 const props = defineProps<{
     reviewId: number,
@@ -16,11 +16,9 @@ const content = ref()
 
 async function sendComment () {
     try {
-        const response = await axios.post('http://localhost:5007/Comment', {
+        const response = await api.post('/Comment', {
             ReviewId: props.reviewId,
             Content: content.value,
-        }, {
-            withCredentials: true
         })
 
         emit('comment-created', response.data.Id);

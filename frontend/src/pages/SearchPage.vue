@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import MySearch from '@/components/MySearch.vue';
+import api from '@/lib/axios';
 import router from '@/router';
 import type { IFilterItem } from '@/types/filter';
-import axios from 'axios';
 import { onMounted, ref } from 'vue';
 
 const query = ref()
@@ -46,9 +46,7 @@ const selectedPublisherId = ref()
 
 async function fetchGenres() {
     try {
-        genres.value = (await axios.get('http://localhost:5007/Genres', {
-            withCredentials: true,
-        })).data
+        genres.value = (await api.get('/Genres')).data
     } catch (error) {
         console.log('Ошибка загрузки жанров');
     }
@@ -56,9 +54,7 @@ async function fetchGenres() {
 
 async function fetchPlatforms() {
     try {
-        platforms.value = (await axios.get('http://localhost:5007/Platforms', {
-            withCredentials: true,
-        })).data
+        platforms.value = (await api.get('/Platforms')).data
     } catch (error) {
         console.log('Ошибка загрузки платформ');
     }   
@@ -66,9 +62,7 @@ async function fetchPlatforms() {
 
 async function fetchDevelopers() {
     try {
-        developers.value = (await axios.get('http://localhost:5007/Developers', {
-            withCredentials: true,
-        })).data
+        developers.value = (await api.get('/Developers')).data
     } catch (error) {
         console.log('Ошибка загрузки разработчиков');
     }
@@ -76,9 +70,7 @@ async function fetchDevelopers() {
 
 async function fetchPublishers() {
     try {
-        publishers.value = (await axios.get('http://localhost:5007/Publishers', {
-            withCredentials: true,
-        })).data
+        publishers.value = (await api.get('/Publishers')).data
     } catch (error) {
         console.log('Ошибка загрузки издателей');
     }

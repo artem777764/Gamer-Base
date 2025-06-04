@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import axios from 'axios'
 import Card from '@/components/Card.vue';
 import { useRoute } from 'vue-router';
 import TextBlock from '@/components/TextBlock.vue';
+import api from '@/lib/axios';
 
 const route = useRoute()
 const id = route.params.id as string
@@ -25,7 +25,7 @@ const game = ref<Game>()
 async function fetchGameInfo(id: string)
 {
     try {
-        const response = await axios.get(`http://localhost:5007/Games/${id}`)
+        const response = await api.get(`/Games/${id}`)
         game.value = response.data
     } catch (error) {
         console.error('Ошибка при загрузке игры:', error);

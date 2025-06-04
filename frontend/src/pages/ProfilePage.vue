@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import Card from '@/components/Card.vue';
+import api from '@/lib/axios';
 import { useUserStore } from '@/stores/user';
 import type { IUser } from '@/types/user';
-import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -18,7 +18,7 @@ const fileInputRef = ref<HTMLInputElement | null>(null);
 
 async function getUser() {
   try {
-    const response = await axios.get(`http://localhost:5007/Authorization/GetUserInfo/${profileId}`,  {
+    const response = await api.get(`/Authorization/GetUserInfo/${profileId}`,  {
       withCredentials: true,
       params: {
         userId: profileId,
@@ -43,7 +43,7 @@ async function handleFileSelected(event: Event) {
   formData.append('File', file);
 
   try {
-    await axios.put('http://localhost:5007/Authorization/UpdateProfilePhoto', formData, {
+    await api.put('/Authorization/UpdateProfilePhoto', formData, {
       withCredentials: true,
       headers: {
         'Content-Type': 'multipart/form-data',

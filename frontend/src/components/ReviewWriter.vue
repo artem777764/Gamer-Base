@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import MyInput from '@/components/ui/MyInput.vue';
 import MyButton from '@/components/ui/MyButton.vue';
-import axios from 'axios';
+import api from '@/lib/axios';
 
 const props = defineProps<{
     gameId: number,
@@ -21,13 +21,11 @@ const messageColor = ref('text-red-500')
 
 async function SendReview () {
     try {
-        const response = await axios.post('http://localhost:5007/Review', {
+        const response = await api.post('/Review', {
             GameId: props.gameId,
             Mark: mark.value,
             Title: title.value,
             Content: content.value,
-        }, {
-            withCredentials: true
         })
 
         message.value = 'Отзыв отправлен!'

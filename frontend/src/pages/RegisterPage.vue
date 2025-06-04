@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import MyForm from '@/components/MyForm.vue';
 import { ref } from 'vue';
-import axios from 'axios'
 import { useRouter } from 'vue-router'
+import api from '@/lib/axios';
 
 const router = useRouter()
 
@@ -38,7 +38,7 @@ const handeSubmit = async () => {
     }
 
     try {
-        await axios.post('http://localhost:5007/Authorization/Register', {
+        await api.post('/Authorization/Register', {
             Email: email.value,
             Login: login.value,
             Password: password.value,
